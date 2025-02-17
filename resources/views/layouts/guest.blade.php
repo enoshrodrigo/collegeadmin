@@ -14,6 +14,10 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+        @livewire('navigation-menu', ['slotContent' => $slot])
+
+
+
         <!-- Styles -->
         @livewireStyles
     </head>
