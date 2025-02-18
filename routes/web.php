@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
 
@@ -32,11 +33,10 @@ Route::middleware([
         return view('uses');
     })->name('uses');
 
-
-    Route::get('/events', function () {
-        return view('pages.events');
-    })->name('events');
+ 
 
     Route::resource('news', NewsController::class);
+    Route::resource('events', EventController::class);
+    Route::delete('events/{event}/photos/{photo}', [EventController::class, 'destroyPhoto'])->name('events.photos.destroy');
 });
   

@@ -20,8 +20,8 @@
           </a>
         </li>
 
-        <li class="nav-item {{ request()->routeIs('events') ? 'active bg-slate-50' : '' }}">
-          <a href="{{ route('events') }}" class="nav-link  ">
+        <li class="nav-item {{ request()->routeIs('events.index') ? 'active bg-slate-50' : '' }}">
+          <a href="{{ route('events.index') }}" class="nav-link  ">
             <i class="link-icon" data-feather="user"></i>
             <span class="link-title">{{ __('Add Events') }}</span>
           </a>
