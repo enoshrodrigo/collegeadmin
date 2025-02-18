@@ -29,7 +29,7 @@ class EnsureAllowedDomain
 
         // If the Origin header is missing or not allowed, return an error.
         if (!$origin || !in_array($origin, $this->allowedOrigins)) {
-            return response()->json(['error' => $origin], 403);
+            return response()->json(['error' => 'Unauthorized Access'], 403);
         }
 
         return $next($request);
