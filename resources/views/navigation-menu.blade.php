@@ -13,17 +13,24 @@
     </div>
     <div class="sidebar-body">
       <ul class="nav">
-        <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+        <li class="nav-item {{ request()->routeIs('dashboard') ? 'active bg-slate-50' : '' }}">
           <a href="{{ route('dashboard') }}" class="nav-link">
             <i class="link-icon" data-feather="user"></i>
             <span class="link-title">{{ __('Dashboard') }}</span>
           </a>
         </li>
 
-        <li class="nav-item {{ request()->routeIs('events') ? 'active' : '' }}">
-          <a href="{{ route('events') }}" class="nav-link">
+        <li class="nav-item {{ request()->routeIs('events') ? 'active bg-slate-50' : '' }}">
+          <a href="{{ route('events') }}" class="nav-link  ">
             <i class="link-icon" data-feather="user"></i>
             <span class="link-title">{{ __('Add Events') }}</span>
+          </a>
+        </li>
+
+        <li class="nav-item {{ request()->routeIs('news.index') ? 'active bg-slate-50' : '' }}">
+          <a href="{{ route('news.index') }}" class="nav-link">
+            <i class="link-icon" data-feather="user"></i>
+            <span class="link-title">{{ __('Add News') }}</span>
           </a>
         </li>
 
