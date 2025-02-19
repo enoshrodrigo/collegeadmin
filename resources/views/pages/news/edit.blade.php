@@ -78,7 +78,7 @@
             <div class="mb-4" x-show="action === 'more_info'">
                 <label for="more_info" class="block text-gray-700">More Info</label>
                 <input id="more_info" type="hidden" name="more_info" value="{{ old('more_info', $news->more_info) }}">
-                <trix-editor input="more_info" class="trix-content"></trix-editor>
+                <trix-editor input="more_info" class="trix-content h-64" id="trix-editor"></trix-editor>
                 @error('more_info')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
@@ -97,6 +97,14 @@
     <!-- Include Trix Editor CSS and JS -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.js"></script>
+
+    <!-- Disable file attachment in Trix editor -->
+    <script>
+        document.addEventListener('trix-file-accept', function(event) {
+            event.preventDefault(); // This disables the file attachment functionality
+        });
+    </script>
+
     <!-- Alpine.js for toggling action fields -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </x-app-layout>
