@@ -29,6 +29,7 @@ class EventController extends Controller
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
             'link'        => 'nullable|url',
+            'photos'      => 'nullable|array', // Ensure photos is an array
             'photos.*'    => 'nullable|image|max:2048',
         ]);
 
@@ -40,12 +41,13 @@ class EventController extends Controller
 
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                // Store in a folder named for the event's ID
-                $path = $photo->store("events/{$event->id}", 'public');
-                EventPhoto::create([
-                    'event_id' => $event->id,
-                    'photo'    => $path,
-                ]);
+                if ($photo->isValid()) {
+                    $path = $photo->store("events/{$event->id}", 'public');
+                    EventPhoto::create([
+                        'event_id' => $event->id,
+                        'photo'    => $path,
+                    ]);
+                }
             }
         }
 
@@ -73,6 +75,7 @@ class EventController extends Controller
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
             'link'        => 'nullable|url',
+            'photos'      => 'nullable|array',
             'photos.*'    => 'nullable|image|max:2048',
         ]);
 
@@ -84,11 +87,13 @@ class EventController extends Controller
 
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
-                $path = $photo->store("events/{$event->id}", 'public');
-                EventPhoto::create([
-                    'event_id' => $event->id,
-                    'photo'    => $path,
-                ]);
+                if ($photo->isValid()) {
+                    $path = $photo->store("events/{$event->id}", 'public');
+                    EventPhoto::create([
+                        'event_id' => $event->id,
+                        'photo'    => $path,
+                    ]);
+                }
             }
         }
 
@@ -102,27 +107,27 @@ class EventController extends Controller
             if (Storage::disk('public')->exists($photo->photo)) {
                 Storage::disk('public')->delete($photo->photo);
             }
+            $photo->delete();
         }
+
         $event->delete();
+
         return redirect()->route('events.index')->with('success', 'Event deleted successfully!');
     }
-    
+
+    // Delete a single photo
     public function destroyPhoto(Event $event, EventPhoto $photo)
-{
-    // Ensure the photo belongs to the given event
-    if ($photo->event_id !== $event->id) {
-        abort(404);
+    {
+        if ($photo->event_id !== $event->id) {
+            abort(404);
+        }
+
+        if (Storage::disk('public')->exists($photo->photo)) {
+            Storage::disk('public')->delete($photo->photo);
+        }
+
+        $photo->delete();
+
+        return redirect()->back()->with('success', 'Photo deleted successfully!');
     }
-
-    // Delete the photo file from storage if it exists
-    if (Storage::disk('public')->exists($photo->photo)) {
-        Storage::disk('public')->delete($photo->photo);
-    }
-
-    // Delete the photo record from the database
-    $photo->delete();
-
-    return redirect()->back()->with('success', 'Photo deleted successfully!');
-}
-
 }
