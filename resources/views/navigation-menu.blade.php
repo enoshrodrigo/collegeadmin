@@ -34,6 +34,20 @@
           </a>
         </li>
 
+        <li class="nav-item {{ request()->routeIs('admissions.index') ? 'active bg-slate-50' : '' }}">
+          <a href="{{ route('admissions.index') }}" class="nav-link">
+            <i class="link-icon" data-feather="user"></i>
+            <span class="link-title">{{ __('Add Admissions') }}</span>
+          </a>
+        </li>
+
+        <li class="nav-item {{ request()->routeIs('intakes.index') ? 'active bg-slate-50' : '' }}">
+          <a href="{{ route('intakes.index') }}" class="nav-link">
+            <i class="link-icon" data-feather="user"></i>
+            <span class="link-title">{{ __('Add Intakes') }}</span>
+          </a>
+        </li>
+
         <li class="nav-item">
           <a class="nav-link" data-bs-toggle="collapse" href="#category" role="button" aria-expanded="false" aria-controls="category">
             <i class="link-icon" data-feather="list"></i>
