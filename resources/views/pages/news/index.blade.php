@@ -89,7 +89,7 @@
         </div>
     </div>
     <script>
-        fetch('http://localhost:8000/api/news', {
+        fetch('http://localhost:8000/api/events', {
             method: 'POST', 
         })
         .then(response => response.json())
