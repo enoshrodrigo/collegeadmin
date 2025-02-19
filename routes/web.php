@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddmissionController;
 use App\Http\Controllers\AdmissionController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\IntakeController;
 use App\Http\Controllers\NewsController;
@@ -45,7 +46,7 @@ Route::middleware([
     /*Route::resource('admission', AdmissionController::class); */
     Route::resource('admissions', AdmissionController::class);
     Route::resource('intakes', IntakeController::class);
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 });
   
