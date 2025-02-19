@@ -16,7 +16,7 @@
         <!-- End fonts -->
       
         <!-- Layout styles -->  
-        <link rel="stylesheet" href="assets/css/style.css">
+        
         <!-- End layout styles -->
       
         <!-- Scripts -->

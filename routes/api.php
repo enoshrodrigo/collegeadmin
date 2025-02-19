@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiEventsController;
 use App\Http\Controllers\ApiNewsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,5 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::middleware(['allowed.domain'])->group(function () {
     Route::post('/news', [ApiNewsController::class, 'index']);
+    Route::post('/events', [ApiEventsController::class, 'index']);
     
 });
