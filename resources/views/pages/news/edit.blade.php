@@ -11,6 +11,8 @@
                 <label for="title" class="block text-gray-700">Title</label>
                 <input type="text" name="title" id="title" value="{{ old('title', $news->title) }}"
                     class="mt-1 block w-full rounded-md border-gray-300" required>
+                @error('title')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
 
