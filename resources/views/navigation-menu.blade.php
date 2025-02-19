@@ -47,6 +47,15 @@
             <span class="link-title">{{ __('Add Intakes') }}</span>
           </a>
         </li>
+
+        <li class="nav-item {{ request()->routeIs('intakes.index') ? '' : '' }}">
+          <a href="https://calendar.google.com/calendar/u/0/r?pli=1"  target='_blank' class="nav-link">
+            <i class="link-icon" data-feather="calendar"></i>
+            <span class="link-title">{{ __('Add Calender') }}</span>
+          </a>
+        </li>
+
+
         <li class="nav-item" x-data="{ open: false }">
           <button @click="open = !open" class="nav-link">
             <i class="mlink-icon" data-feather="user"></i>
