@@ -18,6 +18,8 @@
         <!-- Layout styles -->  
         
         <!-- End layout styles -->
+       
+         
       
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -50,7 +52,7 @@
             <livewire:navigation-menu/> 
 
             <!-- Main Content Area -->
-            <main class="page-content p-5 w-full">
+            <main class="page-content p-5 w-full ">
                 {{ $slot }}
  
            

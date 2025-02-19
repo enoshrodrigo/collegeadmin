@@ -54,12 +54,19 @@ class IntakeController extends Controller
         return redirect()->route('intakes.index')
             ->with('success', 'Intake updated successfully.');
     }
-
-    // Delete an intake (optional, consider cascade delete on admissions or restrict)
-    public function destroy(Intake $intake)
-    {
-        $intake->delete();
+ 
+  // Delete an intake (optional, consider cascade delete on admissions or restrict)
+public function destroy(Intake $intake)
+{
+    // Check if there are any admissions associated with this intake
+    if ($intake->admissions()->exists()) {
         return redirect()->route('intakes.index')
-            ->with('success', 'Intake deleted successfully.');
+            ->with('error', 'Intake cannot be deleted because there are admissions associated with it.');
     }
+
+    $intake->delete();
+    return redirect()->route('intakes.index')
+        ->with('success', 'Intake deleted successfully.');
+}
+
 }

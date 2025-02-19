@@ -1,9 +1,9 @@
-<div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-100">
+<div x-data="{ sidebarOpen: false }" class="flex h-full bg-gray-100">
   <!-- Mobile off-canvas sidebar -->
-  <nav class="sidebar position-relative">
+  <nav class="sidebar position-relative ">
     <div class="sidebar-header">
-      <a href="../index.html" class="sidebar-brand">
-        <img src="../images/logo.png" alt="logo" class="w-75">
+      <a href="{{route('dashboard')}}" class="sidebar-brand">
+        <img src="https://mazenodcollege.lk/wp-content/uploads/2023/02/Mazenod-College-High-res-2.png" alt="logo" class=" w-16">
       </a>
       <div class="sidebar-toggler not-active">
         <span></span>
@@ -47,14 +47,13 @@
             <span class="link-title">{{ __('Add Intakes') }}</span>
           </a>
         </li>
-
         <li class="nav-item" x-data="{ open: false }">
           <button @click="open = !open" class="nav-link">
             <i class="mlink-icon" data-feather="user"></i>
             <span>{{ __('Profile') }}</span>
             <i class="link-title transition-transform duration-200" 
                :class="{ 'rotate-180': open }" 
-               data-feather="chevron-down"></i>
+               data-lucide="chevron-down"></i>
           </button>
           <!-- Removed extra left padding ("pl-8") to align dropdown content with the sidebar -->
           <ul x-show="open" x-collapse class="space-y-1 p-0" x-cloak>
@@ -76,7 +75,7 @@
             <!-- Profile Links -->
             <li>
               <a href="{{ route('profile.show') }}" class="flex items-center p-3 text-gray-700 hover:bg-slate-50">
-                <i class="mr-2" data-feather="settings"></i>
+                <i class="mr-2" data-lucide="settings"></i>
                 <span>{{ __('Profile') }}</span>
               </a>
             </li>
@@ -84,7 +83,7 @@
             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
               <li>
                 <a href="{{ route('api-tokens.index') }}" class="flex items-center p-3 text-gray-700 hover:bg-slate-50">
-                  <i class="mr-2" data-feather="key"></i>
+                  <i class="mr-2" data-lucide="key"></i>
                   <span>{{ __('API Tokens') }}</span>
                 </a>
               </li>
@@ -94,7 +93,7 @@
               <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="flex w-full items-center p-3 text-gray-700 hover:bg-slate-50 text-left">
-                  <i class="mr-2" data-feather="log-out"></i>
+                  <i class="mr-2" data-lucide="log-out"></i>
                   <span>{{ __('Log Out') }}</span>
                 </button>
               </form>
@@ -106,14 +105,14 @@
               </li>
               <li>
                 <a href="{{ route('teams.show', Auth::user()->currentTeam->id) }}" class="flex items-center p-3 text-gray-700 hover:bg-slate-50">
-                  <i class="mr-2" data-feather="settings"></i>
+                  <i class="mr-2" data-lucide="settings"></i>
                   <span>{{ __('Team Settings') }}</span>
                 </a>
               </li>
               @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
                 <li>
                   <a href="{{ route('teams.create') }}" class="flex items-center p-3 text-gray-700 hover:bg-slate-50">
-                    <i class="mr-2" data-feather="plus-circle"></i>
+                    <i class="mr-2" data-lucide="plus-circle"></i>
                     <span>{{ __('Create New Team') }}</span>
                   </a>
                 </li>
@@ -136,4 +135,11 @@
   </nav>
 </div>
 
- 
+
+                  
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.2/dist/cdn.min.js"></script> 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    lucide.createIcons();
+  });
+</script>

@@ -92,6 +92,11 @@
                 </button>
             </div>
         </form>
+        <div class="mt-8">
+            <a href="{{ route('news.index') }}" class="text-blue-600 hover:underline">
+                Back to News
+            </a>
+        </div>
     </div>
 
     <!-- Include Trix Editor CSS and JS -->
