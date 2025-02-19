@@ -15,174 +15,125 @@
       <ul class="nav">
         <li class="nav-item {{ request()->routeIs('dashboard') ? 'active bg-slate-50' : '' }}">
           <a href="{{ route('dashboard') }}" class="nav-link">
-            <i class="link-icon" data-feather="user"></i>
+            <i class="link-icon" data-feather="home"></i>
             <span class="link-title">{{ __('Dashboard') }}</span>
           </a>
         </li>
 
         <li class="nav-item {{ request()->routeIs('events.index') ? 'active bg-slate-50' : '' }}">
-          <a href="{{ route('events.index') }}" class="nav-link  ">
-            <i class="link-icon" data-feather="user"></i>
+          <a href="{{ route('events.index') }}" class="nav-link">
+            <i class="link-icon" data-feather="calendar"></i>
             <span class="link-title">{{ __('Add Events') }}</span>
           </a>
         </li>
 
         <li class="nav-item {{ request()->routeIs('news.index') ? 'active bg-slate-50' : '' }}">
           <a href="{{ route('news.index') }}" class="nav-link">
-            <i class="link-icon" data-feather="user"></i>
+            <i class="link-icon" data-feather="file-text"></i>
             <span class="link-title">{{ __('Add News') }}</span>
           </a>
         </li>
 
         <li class="nav-item {{ request()->routeIs('admissions.index') ? 'active bg-slate-50' : '' }}">
           <a href="{{ route('admissions.index') }}" class="nav-link">
-            <i class="link-icon" data-feather="user"></i>
+            <i class="link-icon" data-feather="book-open"></i>
             <span class="link-title">{{ __('Add Admissions') }}</span>
           </a>
         </li>
 
         <li class="nav-item {{ request()->routeIs('intakes.index') ? 'active bg-slate-50' : '' }}">
           <a href="{{ route('intakes.index') }}" class="nav-link">
-            <i class="link-icon" data-feather="user"></i>
+            <i class="link-icon" data-feather="user-plus"></i>
             <span class="link-title">{{ __('Add Intakes') }}</span>
           </a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#category" role="button" aria-expanded="false" aria-controls="category">
-            <i class="link-icon" data-feather="list"></i>
-            <span class="link-title">Category Section</span>
-            <i class="link-arrow" data-feather="chevron-down"></i>
-          </a>
-          <div class="collapse" id="category">
-            <ul class="nav sub-menu">
-              <li class="nav-item">
-                <a href="{{ route('uses') }}" class="nav-link">Main Category</a>
+        <li class="nav-item" x-data="{ open: false }">
+          <button @click="open = !open" class="nav-link">
+            <i class="mlink-icon" data-feather="user"></i>
+            <span>{{ __('Profile') }}</span>
+            <i class="link-title transition-transform duration-200" 
+               :class="{ 'rotate-180': open }" 
+               data-feather="chevron-down"></i>
+          </button>
+          <!-- Removed extra left padding ("pl-8") to align dropdown content with the sidebar -->
+          <ul x-show="open" x-collapse class="space-y-1 p-0" x-cloak>
+            <!-- Jetstream Profile Photo and Details -->
+            <li class="p-3 border-t border-gray-200">
+              <div class="flex items-center">
+                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                  <img class="h-10 w-10 rounded-full object-cover" 
+                       src="{{ Auth::user()->profile_photo_url }}" 
+                       alt="{{ Auth::user()->name }}">
+                @endif
+                <div class="ml-3">
+                  <div class="font-medium text-gray-800">{{ Auth::user()->name }}</div>
+                  <div class="text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                </div>
+              </div>
+            </li>
+  
+            <!-- Profile Links -->
+            <li>
+              <a href="{{ route('profile.show') }}" class="flex items-center p-3 text-gray-700 hover:bg-slate-50">
+                <i class="mr-2" data-feather="settings"></i>
+                <span>{{ __('Profile') }}</span>
+              </a>
+            </li>
+  
+            @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
+              <li>
+                <a href="{{ route('api-tokens.index') }}" class="flex items-center p-3 text-gray-700 hover:bg-slate-50">
+                  <i class="mr-2" data-feather="key"></i>
+                  <span>{{ __('API Tokens') }}</span>
+                </a>
               </li>
-              <li class="nav-item">
-                <a href="{{ route('uses') }}" class="nav-link">Parent Category</a>
+            @endif
+  
+            <li>
+              <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="flex w-full items-center p-3 text-gray-700 hover:bg-slate-50 text-left">
+                  <i class="mr-2" data-feather="log-out"></i>
+                  <span>{{ __('Log Out') }}</span>
+                </button>
+              </form>
+            </li>
+  
+            @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+              <li class="mt-3 border-t border-gray-200 pt-3">
+                <span class="px-3 text-xs text-gray-400">{{ __('Manage Team') }}</span>
               </li>
-              <li class="nav-item">
-                <a href="{{ route('uses') }}" class="nav-link">Child Category</a>
+              <li>
+                <a href="{{ route('teams.show', Auth::user()->currentTeam->id) }}" class="flex items-center p-3 text-gray-700 hover:bg-slate-50">
+                  <i class="mr-2" data-feather="settings"></i>
+                  <span>{{ __('Team Settings') }}</span>
+                </a>
               </li>
-            </ul>
-          </div>
+              @can('create', Laravel\Jetstream\Jetstream::newTeamModel())
+                <li>
+                  <a href="{{ route('teams.create') }}" class="flex items-center p-3 text-gray-700 hover:bg-slate-50">
+                    <i class="mr-2" data-feather="plus-circle"></i>
+                    <span>{{ __('Create New Team') }}</span>
+                  </a>
+                </li>
+              @endcan
+              @if (Auth::user()->allTeams()->count() > 1)
+                <li class="mt-3 border-t border-gray-200 pt-3">
+                  <span class="px-3 text-xs text-gray-400">{{ __('Switch Teams') }}</span>
+                </li>
+                @foreach (Auth::user()->allTeams() as $team)
+                  <li>
+                    <x-switchable-team :team="$team" component="responsive-nav-link" />
+                  </li>
+                @endforeach
+              @endif
+            @endif
+          </ul>
         </li>
-
-        <li class="nav-item">
-          <a href="{{ route('uses') }}" class="nav-link">
-            <i class="link-icon" data-feather="file"></i>
-            <span class="link-title">About Section</span>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ route('uses') }}" class="nav-link">
-          <i class="link-icon" data-feather="type"></i>
-          <span class="link-title">Content Management</span>
-          </a>
-        </li>
-
-        <li class="nav-item">
-            <a href="{{ route('uses') }}" class="nav-link">
-            <i class="link-icon" data-feather="columns"></i>
-            <span class="link-title">Sevices Section</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ route('uses') }}" class="nav-link">
-            <i class="link-icon" data-feather="image"></i>
-            <span class="link-title">Gallery Section</span>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#events" role="button" aria-expanded="false" aria-controls="events">
-            <i class="link-icon" data-feather="user"></i>
-            <span class="link-title">Package Management</span>
-            <i class="link-arrow" data-feather="chevron-down"></i>
-          </a>
-          <div class="collapse" id="events">
-            <ul class="nav sub-menu">
-              <li class="nav-item">
-                <a href="{{ route('uses') }}" class="nav-link">All Package Lists</a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('uses') }}" class="nav-link">Add Package</a>
-              </li>
-            </ul>
-          </div>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ route('uses') }}" class="nav-link">
-            <i class="link-icon" data-feather="pocket"></i>
-            <span class="link-title">Testimonial Section</span>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ route('uses') }}" class="nav-link">
-            <i class="link-icon" data-feather="table"></i>
-            <span class="link-title">Booking Section</span>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="{{ route('uses') }}" class="nav-link">
-            <i class="link-icon" data-feather="gift"></i>
-            <span class="link-title">Coupons</span>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false" aria-controls="users">
-            <i class="link-icon" data-feather="user"></i>
-            <span class="link-title">User Management</span>
-            <i class="link-arrow" data-feather="chevron-down"></i>
-          </a>
-          <div class="collapse" id="users">
-            <ul class="nav sub-menu">
-              <li class="nav-item">
-                <a href="{{ route('uses') }}" class="nav-link">All User Lists</a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('uses') }}" class="nav-link">Add User</a>
-              </li>
-            </ul>
-          </div>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" data-bs-toggle="collapse" href="#setting" role="button" aria-expanded="false" aria-controls="setting">
-            <i class="link-icon" data-feather="settings"></i>
-            <span class="link-title">Settings</span>
-            <i class="link-arrow" data-feather="chevron-down"></i>
-          </a>
-          <div class="collapse" id="setting">
-            <ul class="nav sub-menu">
-              <li class="nav-item">
-                <a href="{{ route('uses') }}" class="nav-link">Company Profile</a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('uses') }}" class="nav-link">Role Management</a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('uses') }}" class="nav-link">Configuration</a>
-              </li>
-            </ul>
-          </div>
-        </li>
-
       </ul>
     </div>
   </nav>
 </div>
 
-<script>
-  // Initialize lucide icons after DOM loads
-  document.addEventListener('DOMContentLoaded', function () {
-    lucide.createIcons();
-  });
-</script>
+ 
