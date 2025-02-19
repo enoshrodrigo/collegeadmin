@@ -45,6 +45,10 @@
           </tbody>
         </table>
       </div>
+      <div class="mt-6">
+        {{ $intakes->links() }}
+    </div>
+    
     </div>
   </x-app-layout>
   

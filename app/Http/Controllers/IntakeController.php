@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 
 class IntakeController extends Controller
 {
-    // List all intakes (admin)
+    // List all intakes (admin) with pagination
     public function index()
     {
-        $intakes = Intake::orderBy('name')->get();
+        // Paginate results, 10 per page (adjust as needed)
+        $intakes = Intake::orderBy('name')->paginate(20);
         return view('pages.intakes.index', compact('intakes'));
     }
 
@@ -26,7 +27,7 @@ class IntakeController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'registration_enabled' => 'required|boolean',
-            'date' => 'date',
+            'date' => 'nullable|date',
         ]);
 
         Intake::create($validated);
@@ -46,7 +47,7 @@ class IntakeController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'registration_enabled' => 'required|boolean',
-            'date' => 'date',
+            'date' => 'nullable|date',
         ]);
 
         $intake->update($validated);
