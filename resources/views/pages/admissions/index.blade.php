@@ -9,7 +9,17 @@
         </a>
       </div>
     </div>
+    @if (session('success'))
+    <div class="mb-4 p-4 bg-green-100 text-green-700 rounded-lg">
+      {{ session('success') }}
+    </div>
+  @endif
 
+  @if (session('error'))
+  <div class="mb-4 p-4 bg-red-100 text-red-700 rounded-lg">
+    {{ session('error') }}
+  </div>
+@endif
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
       <!-- Fully Filled Applications -->

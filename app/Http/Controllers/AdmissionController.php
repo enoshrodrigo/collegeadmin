@@ -29,10 +29,10 @@ class AdmissionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nic'        => 'required|string|unique:admissions,nic',
+            'nic'        => 'required|string',
             'dob'        => 'required|date',
             'name'       => 'required|string|max:255',
-            'email'      => 'required|email|unique:admissions,email',
+            'email'      => 'required|email',
             'mobile_no'  => 'required|string|max:20',
             'intake_id'  => 'required|exists:intakes,id',
             'g-recaptcha-response' => 'required|captcha',
@@ -92,13 +92,14 @@ class AdmissionController extends Controller
     public function update(Request $request, Admission $admission)
     {
         $validated = $request->validate([
-            'nic'        => 'required|string|unique:admissions,nic,' . $admission->id,
+            'nic'        => 'required|string',
             'dob'        => 'required|date',
             'name'       => 'required|string|max:255',
-            'email'      => 'required|email|unique:admissions,email,' . $admission->id,
+            'email'      => 'required|email',
             'mobile_no'  => 'required|string|max:20',
             'intake_id'  => 'required|exists:intakes,id',
         ]);
+        
 
         $admission->update($validated);
 
