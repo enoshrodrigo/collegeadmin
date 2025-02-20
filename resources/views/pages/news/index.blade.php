@@ -31,7 +31,7 @@
                         <!-- Main Action Button -->
                         <div class="mb-4">
                             @if($item->action === 'link')
-                                <a href="{{ $item->action_link }}"
+                                <a href="{{ $item->action_link }}" target="_blank"
                                    class="block w-full text-center px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                                     <div class="flex items-center justify-center">
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +41,7 @@
                                     </div>
                                 </a>
                             @else
-                                <a href="{{ route('news.show', $item->id) }}"
+                                <a href="{{ route('news.show', $item->id) }}"  target="_blank"
                                    class="block w-full text-center px-4 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                                     <div class="flex items-center justify-center">
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
