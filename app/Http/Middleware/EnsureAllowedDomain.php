@@ -13,6 +13,7 @@ class EnsureAllowedDomain
     protected $allowedOrigins = [
         'http://localhost:8000', // adjust as needed
         'http://127.0.0.1:8000',
+        'https://admin.marysvenner.net'
     ];
 
     /**
