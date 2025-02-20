@@ -23,7 +23,7 @@ class DashboardController extends Controller
         $latestNews = News::latest()->paginate(5, ['*'], 'news_page');
         
         // Upcoming Events (Paginated, assuming 'event_date' is a field on Event model)\n 
-        $upcomingEvents = Event::where('created_at', '>=', Carbon::today())->orderBy('created_at', 'asc')->paginate(5, ['*'], 'events_page');
+        $upcomingEvents = Event::latest()->paginate(5, ['*'], 'events_page');
         
         // Recent Admissions (Paginated)
         $recentAdmissions = Admission::latest()->paginate(5, ['*'], 'admissions_page');
