@@ -30,6 +30,9 @@
             @csrf
             @method('PUT')
 
+            <!-- Hidden input to submit the toggle value -->
+            <input type="hidden" name="action" x-model="action">
+
             <!-- Title -->
             <div class="mb-4">
                 <label for="title" class="block text-gray-700">Title</label>
@@ -49,7 +52,7 @@
                            x-ref="fileInput" 
                            @change="if ($refs.fileInput.files.length) { imagePreview = URL.createObjectURL($refs.fileInput.files[0]); }">
                     <p class="text-gray-500">
-                        <span class="text-blue-500 cursor-pointer hover:underline" @click="$refs.fileInput.click()">browse</span>
+                        <span class="text-blue-500  " >Drag and Drop Here</span>
                     </p>
                     <div class="mt-4" x-show="imagePreview">
                         <img :src="imagePreview" class="w-40 h-40 object-cover mx-auto rounded-md">
@@ -84,20 +87,19 @@
                 @enderror
             </div>
 
-            <!-- Action Type -->
+            <!-- Action Type Toggle -->
             <div class="mb-4">
-                <span class="block text-gray-700">Action Type</span>
-                <label class="inline-flex items-center mt-1">
-                    <input type="radio" class="form-radio" name="action" value="link" x-model="action">
-                    <span class="ml-2">Link</span>
-                </label>
-                <label class="inline-flex items-center ml-6">
-                    <input type="radio" class="form-radio" name="action" value="more_info" x-model="action">
-                    <span class="ml-2">More Info</span>
-                </label>
-                @error('action')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
+                <span class="block text-gray-700 mb-2">Action Type</span>
+                <div class="flex items-center">
+                    <!-- Toggle Switch -->
+                    <div class="relative inline-block w-16 h-8 cursor-pointer rounded-full transition-colors duration-200" 
+                         :class="{'bg-blue-600': action === 'more_info', 'bg-gray-300': action === 'link'}"
+                         @click="action = (action === 'link') ? 'more_info' : 'link'">
+                        <span class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-200"
+                              :class="{'translate-x-8': action === 'more_info', 'translate-x-0': action === 'link'}"></span>
+                    </div>
+                    <span class="ml-3 text-gray-700 font-medium" x-text="action === 'link' ? 'Link' : 'More Info'"></span>
+                </div>
             </div>
 
             <!-- Link Input (Shown if "Link" is selected) -->
@@ -113,7 +115,7 @@
             <!-- More Info with Quill Editor (Shown if "More Info" is selected) -->
             <div class="mb-4" x-show="action === 'more_info'">
                 <label for="more_info" class="block text-gray-700">More Info</label>
-                <div id="more-info-editor" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring focus:ring-blue-300">
+                <div id="more-info-editor" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring focus:ring-blue-300" style="height: 400px;">
                     {!! old('more_info', $news->more_info) !!}
                 </div>
                 <input type="hidden" name="more_info" id="hidden-more-info" value="{{ old('more_info', $news->more_info) }}">
@@ -145,7 +147,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Initialize Quill editor for the More Info field only
+            // Initialize Quill editor for the More Info field
             var moreInfoQuill = new Quill('#more-info-editor', {
                 theme: 'snow',
                 placeholder: 'Write more info here...'
@@ -159,8 +161,7 @@
             // Also update the hidden input on form submission
             var form = document.querySelector("form");
             form.addEventListener("submit", function () {
-                var actionValue = document.querySelector('input[name="action"]:checked').value;
-                if (actionValue === 'more_info') {
+                if(document.querySelector('input[name="action"]:checked')?.value === 'more_info' || this.action === 'more_info'){
                     document.getElementById('hidden-more-info').value = moreInfoQuill.root.innerHTML;
                 }
             });
