@@ -26,7 +26,7 @@
                     <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->title }}" class="w-full h-48 object-cover">
                     <div class=" p-2.5 flex flex-col flex-grow">
                         <h2 class="text-xl font-bold text-gray-900 mb-3">{{ $item->title }}</h2>
-                        <p class="text-gray-600 mb-4 line-clamp-3">{{ $item->description }}</p>
+                        <p class="text-gray-600 mb-4 line-clamp-1">{{ $item->description }}</p>
                         
                         <!-- Main Action Button -->
                         <div class="mb-4">
