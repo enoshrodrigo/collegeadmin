@@ -23,7 +23,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -32,14 +31,7 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-
-
-    Route::get('/uses', function () {
-        return view('uses');
-    })->name('uses');
-
- 
-
+    
     Route::resource('news', NewsController::class);
     Route::resource('events', EventController::class);
     Route::delete('events/{event}/photos/{photo}', [EventController::class, 'destroyPhoto'])->name('events.photos.destroy');
@@ -48,6 +40,7 @@ Route::middleware([
     Route::resource('intakes', IntakeController::class);
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+ 
 });
   
 Route::get('admissions/create', [AdmissionController::class, 'create'])->name('admissions.create');

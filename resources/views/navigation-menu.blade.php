@@ -1,4 +1,6 @@
+
 <div x-data="{ sidebarOpen: false }" class="flex h-full bg-gray-100">
+  @if (Auth::check() )
   <!-- Mobile off-canvas sidebar -->
   <nav class="sidebar position-relative ">
     <div class="sidebar-header">
@@ -141,7 +143,7 @@
         </li>
       </ul>
     </div>
-  </nav>
+  </nav>@endif
 </div>
 
 
@@ -152,3 +154,6 @@
     lucide.createIcons();
   });
 </script>
+
+
+
