@@ -2,7 +2,31 @@
     <div class="max-w-4xl mx-auto py-8">
         <h1 class="text-2xl font-bold mb-6">Edit News</h1>
 
-        <form action="{{ route('news.update', $news->id) }}" method="POST" enctype="multipart/form-data" x-data="{ action: '{{ $news->action }}' }">
+        <form action="{{ route('news.update', $news->id) }}" method="POST" enctype="multipart/form-data"
+              x-data="{
+                  action: '{{ $news->action }}',
+                  imagePreview: '{{ asset('storage/' . $news->image) }}',
+                  handleDrop(event) {
+                      event.preventDefault();
+                      const files = event.dataTransfer.files;
+                      if (files.length) {
+                          this.$refs.fileInput.files = files;
+                          this.imagePreview = URL.createObjectURL(files[0]);
+                      }
+                  },
+                  handleDragOver(event) {
+                      event.preventDefault();
+                  },
+                  init() {
+                      $watch('action', value => {
+                          if(value === 'more_info'){
+                              setTimeout(() => {
+                                  window.dispatchEvent(new Event('resize'));
+                              }, 100);
+                          }
+                      });
+                  }
+              }">
             @csrf
             @method('PUT')
 
@@ -16,23 +40,35 @@
                 @enderror
             </div>
 
-            <!-- Image Upload -->
+            <!-- Image Upload with Drag & Drop -->
             <div class="mb-4">
                 <label for="image" class="block text-gray-700">Image</label>
-                <div class="mb-2">
-                    <img src="{{ asset('storage/' . $news->image) }}" alt="{{ $news->title }}" class="w-32 h-32 object-cover rounded">
+                <div class="border-2 border-dashed border-gray-300 p-6 rounded-lg text-center bg-gray-100 hover:bg-gray-200 transition"
+                     @dragover="handleDragOver" @drop="handleDrop">
+                    <input type="file" name="image" id="image" class="hidden" accept="image/*"
+                           x-ref="fileInput" 
+                           @change="if ($refs.fileInput.files.length) { imagePreview = URL.createObjectURL($refs.fileInput.files[0]); }">
+                    <p class="text-gray-500">
+                        <span class="text-blue-500 cursor-pointer hover:underline" @click="$refs.fileInput.click()">browse</span>
+                    </p>
+                    <div class="mt-4" x-show="imagePreview">
+                        <img :src="imagePreview" class="w-40 h-40 object-cover mx-auto rounded-md">
+                        <button type="button" class="mt-2 text-red-600 hover:underline"
+                                @click="imagePreview = null; $refs.fileInput.value = ''">
+                            Remove
+                        </button>
+                    </div>
                 </div>
-                <input type="file" name="image" id="image" class="mt-1 block w-full">
                 @error('image')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
 
-            <!-- Description -->
+            <!-- Description (Plain Textarea) -->
             <div class="mb-4">
                 <label for="description" class="block text-gray-700">Description</label>
                 <textarea name="description" id="description" rows="3"
-                    class="mt-1 block w-full rounded-md border-gray-300" required>{{ old('description', $news->description) }}</textarea>
+                          class="mt-1 block w-full rounded-md border-gray-300" required>{{ old('description', $news->description) }}</textarea>
                 @error('description')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
@@ -74,11 +110,13 @@
                 @enderror
             </div>
 
-            <!-- More Info Editor (Shown if "More Info" is selected) -->
+            <!-- More Info with Quill Editor (Shown if "More Info" is selected) -->
             <div class="mb-4" x-show="action === 'more_info'">
                 <label for="more_info" class="block text-gray-700">More Info</label>
-                <input id="more_info" type="hidden" name="more_info" value="{{ old('more_info', $news->more_info) }}">
-                <trix-editor input="more_info" class="trix-content h-64" id="trix-editor"></trix-editor>
+                <div id="more-info-editor" class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:ring focus:ring-blue-300">
+                    {!! old('more_info', $news->more_info) !!}
+                </div>
+                <input type="hidden" name="more_info" id="hidden-more-info" value="{{ old('more_info', $news->more_info) }}">
                 @error('more_info')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
@@ -99,17 +137,33 @@
         </div>
     </div>
 
-    <!-- Include Trix Editor CSS and JS -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.js"></script>
-
-    <!-- Disable file attachment in Trix editor -->
-    <script>
-        document.addEventListener('trix-file-accept', function(event) {
-            event.preventDefault(); // This disables the file attachment functionality
-        });
-    </script>
-
+    <!-- Include Quill Editor CSS and JS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <!-- Alpine.js for toggling action fields -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initialize Quill editor for the More Info field only
+            var moreInfoQuill = new Quill('#more-info-editor', {
+                theme: 'snow',
+                placeholder: 'Write more info here...'
+            });
+
+            // Update the hidden input on every text change so it stays in sync
+            moreInfoQuill.on('text-change', function() {
+                document.getElementById('hidden-more-info').value = moreInfoQuill.root.innerHTML;
+            });
+
+            // Also update the hidden input on form submission
+            var form = document.querySelector("form");
+            form.addEventListener("submit", function () {
+                var actionValue = document.querySelector('input[name="action"]:checked').value;
+                if (actionValue === 'more_info') {
+                    document.getElementById('hidden-more-info').value = moreInfoQuill.root.innerHTML;
+                }
+            });
+        });
+    </script>
 </x-app-layout>
