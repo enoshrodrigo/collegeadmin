@@ -1,21 +1,23 @@
 <IfModule mod_rewrite.c>
-    <IfModule mod_negotiation.c>
-        Options -MultiViews -Indexes
-    </IfModule>
-
     RewriteEngine On
 
-    # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    # Block access to sensitive files
+    <FilesMatch "^(composer\.json|artisan|\.env|README\.md)$">
+        Order allow,deny
+        Deny from all
+    </FilesMatch>
 
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
+    # Serve existing files or directories directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
 
-    # Send Requests To Front Controller...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^ index.php [L]
+    # Redirect root requests to public/index.php
+    RewriteRule ^$ public/index.php [L]
+
+    # Redirect all other requests to the public directory (if they don't already start with "public/")
+    RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+
+    # Adjust the storage rule as needed:
+    RewriteRule ^storage/(.*)$ storage/app/public/$1 [L]
 </IfModule>
