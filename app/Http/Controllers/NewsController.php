@@ -4,13 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\News;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
     public function index(Request $request)
     {
-      /*   dd($request); */
         $news = News::latest()->paginate(20);
         return view('pages.news.index', compact('news'));
     }
@@ -32,9 +30,15 @@ class NewsController extends Controller
             'more_info'     => 'nullable|required_if:action,more_info|string',
         ]);
 
-        // Handle image upload
+        // Handle image upload directly into the storage folder
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('news_images', 'public');
+            $destinationPath = storage_path('news_images');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            $filename = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move($destinationPath, $filename);
+            $path = "news_images/{$filename}";
             $validated['image'] = $path;
         }
 
@@ -66,11 +70,17 @@ class NewsController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
-            if ($news->image && Storage::disk('public')->exists($news->image)) {
-                Storage::disk('public')->delete($news->image);
+            // Delete the old image if it exists in the storage folder
+            if ($news->image && file_exists(storage_path($news->image))) {
+                unlink(storage_path($news->image));
             }
-            $path = $request->file('image')->store('news_images', 'public');
+            $destinationPath = storage_path('news_images');
+            if (!file_exists($destinationPath)) {
+                mkdir($destinationPath, 0777, true);
+            }
+            $filename = time() . '_' . $request->file('image')->getClientOriginalName();
+            $request->file('image')->move($destinationPath, $filename);
+            $path = "news_images/{$filename}";
             $validated['image'] = $path;
         }
 
@@ -81,8 +91,8 @@ class NewsController extends Controller
 
     public function destroy(News $news)
     {
-        if ($news->image && Storage::disk('public')->exists($news->image)) {
-            Storage::disk('public')->delete($news->image);
+        if ($news->image && file_exists(storage_path($news->image))) {
+            unlink(storage_path($news->image));
         }
         $news->delete();
 

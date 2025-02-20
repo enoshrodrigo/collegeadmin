@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\EventPhoto;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -42,7 +41,15 @@ class EventController extends Controller
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
                 if ($photo->isValid()) {
-                    $path = $photo->store("events/{$event->id}", 'public');
+                    // Set destination path in storage/events/{event_id}
+                    $destinationPath = storage_path("events/{$event->id}");
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0777, true);
+                    }
+                    $filename = time() . '_' . $photo->getClientOriginalName();
+                    $photo->move($destinationPath, $filename);
+                    $path = "events/{$event->id}/{$filename}";
+                    
                     EventPhoto::create([
                         'event_id' => $event->id,
                         'photo'    => $path,
@@ -88,7 +95,14 @@ class EventController extends Controller
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
                 if ($photo->isValid()) {
-                    $path = $photo->store("events/{$event->id}", 'public');
+                    $destinationPath = storage_path("events/{$event->id}");
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0777, true);
+                    }
+                    $filename = time() . '_' . $photo->getClientOriginalName();
+                    $photo->move($destinationPath, $filename);
+                    $path = "events/{$event->id}/{$filename}";
+                    
                     EventPhoto::create([
                         'event_id' => $event->id,
                         'photo'    => $path,
@@ -104,8 +118,9 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         foreach ($event->photos as $photo) {
-            if (Storage::disk('public')->exists($photo->photo)) {
-                Storage::disk('public')->delete($photo->photo);
+            $photoPath = storage_path($photo->photo);
+            if (file_exists($photoPath)) {
+                unlink($photoPath);
             }
             $photo->delete();
         }
@@ -122,8 +137,9 @@ class EventController extends Controller
             abort(404);
         }
 
-        if (Storage::disk('public')->exists($photo->photo)) {
-            Storage::disk('public')->delete($photo->photo);
+        $photoPath = storage_path($photo->photo);
+        if (file_exists($photoPath)) {
+            unlink($photoPath);
         }
 
         $photo->delete();
