@@ -13,6 +13,15 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+        {{-- load feather icons throug a link js and all files --}}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.2/dist/cdn.min.js"></script> 
+
+       
+        
+        <!-- Styles -->
+
         
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @vite(['resources/css/core.css', 'resources/js/core.js'])
@@ -56,5 +65,12 @@
         @stack('modals')
 
         @livewireScripts
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                feather.replace();
+
+            });
+        </script>
     </body>
 </html>

@@ -148,7 +148,7 @@
 
 
                   
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.2/dist/cdn.min.js"></script> 
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     lucide.createIcons();
