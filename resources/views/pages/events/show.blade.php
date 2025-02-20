@@ -3,7 +3,7 @@
         <!-- Event Details -->
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900">{{ $event->title }}</h1>
-            <p class="mt-2 text-gray-600">{{ $event->description }}</p>
+            <div class="mt-2 text-gray-600  prose">{!! $event->description !!}</div>
             @if($event->link)
                 <a href="{{ $event->link }}" target="_blank" class="mt-2 inline-block text-blue-600 hover:underline">
                     View More Photos

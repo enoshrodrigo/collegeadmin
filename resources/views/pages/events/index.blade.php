@@ -30,7 +30,7 @@
                     @endif
                     <div class="p-4 flex flex-col flex-grow">
                         <h2 class="text-xl font-bold text-gray-900 mb-2">{{ $event->title }}</h2>
-                        <p class="text-gray-600 mb-4 line-clamp-3">{{ $event->description }}</p>
+                        <div class="mt-1text-gray-600 mb-4 line-clamp-3">{!! $event->description !!}</div>
                         @if($event->link)
                             <a href="{{ $event->link }}" target="_blank" class="text-blue-600 hover:underline mb-4">
                                 View More Photos
