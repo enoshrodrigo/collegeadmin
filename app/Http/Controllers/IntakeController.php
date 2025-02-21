@@ -11,7 +11,7 @@ class IntakeController extends Controller
     public function index()
     {
         // Paginate results, 10 per page (adjust as needed)
-        $intakes = Intake::orderBy('name')->paginate(20);
+        $intakes = Intake::orderBy('name')->paginate(10);
         return view('pages.intakes.index', compact('intakes'));
     }
 

@@ -55,7 +55,7 @@ class AdmissionController extends Controller
         if ($request->filled('intake_id')) {
             $query->where('intake_id', $request->intake_id);
         }
-        $admissions = $query->latest()->paginate(20);
+        $admissions = $query->latest()->paginate(10);
     
         // Statistics
         $fullyFilledCount = Admission::count();
