@@ -12,14 +12,14 @@ class ApiEventsController extends Controller
     {
         
 
-        $events = Event::all(); 
-        $events = $events->map(function ($event) {
+        $events = Event::orderBy('created_at', 'desc')->paginate(9); 
+        $events->getCollection()->transform(function ($event) {
             return [
                 'id' => $event->id,
                 'title' => $event->title,
                 'description' => $event->description,
-                'date' => $event->date,
-                'photos' => $event->photos,
+              /*   'date' => $event->date, */
+                'photo' => $event->photos[0]['photo'] ?? null, // Get the first photo or null if no photos
             ];
         });
 
