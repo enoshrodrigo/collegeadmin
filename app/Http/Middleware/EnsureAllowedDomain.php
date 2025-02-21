@@ -26,7 +26,8 @@ class EnsureAllowedDomain
     public function handle(Request $request, Closure $next)
     {
         // Get the Origin header from the request.
-        $origin = $request->header('Origin');
+        /* $origin = $request->header('Origin'); */
+        $origin = 'https://admin.marysvenner.net';
 
         // If the Origin header is missing or not allowed, return an error.
         if (!$origin || !in_array($origin, $this->allowedOrigins)) {
