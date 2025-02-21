@@ -14,7 +14,9 @@ class ApiNewsController extends Controller
     {
         
 
-        $news = News::all();
+       
+        /* ordewr on created */
+        $news = News::orderBy('created_at', 'desc')->get();
         return response()->json($news);
     }
 }
