@@ -24,5 +24,6 @@ Route::middleware(['allowed.domain'])->group(function () {
     Route::post('/news/home', [ApiNewsController::class, 'home']);
     Route::post('/news/{id}', [ApiNewsController::class, 'show']);
     Route::post('/events', [ApiEventsController::class, 'index']);
+    Route::post('/events/{id}', [ApiEventsController::class, 'show']);
     
 });
