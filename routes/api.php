@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::middleware(['allowed.domain'])->group(function () {
     Route::post('/news', [ApiNewsController::class, 'index']);
+    Route::post('/news/home', [ApiNewsController::class, 'home']);
+    Route::post('/news/{id}', [ApiNewsController::class, 'show']);
     Route::post('/events', [ApiEventsController::class, 'index']);
     
 });
