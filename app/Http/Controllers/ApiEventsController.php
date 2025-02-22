@@ -12,7 +12,9 @@ class ApiEventsController extends Controller
     {
         
 
-        $events = Event::orderBy('created_at', 'desc')->paginate(9); 
+        $events = Event::orderBy('date', 'desc')->where 
+        ('status', 1)
+        ->paginate(9); 
         $events->getCollection()->transform(function ($event) {
             return [
                 'id' => $event->id,
@@ -33,7 +35,8 @@ class ApiEventsController extends Controller
             return response()->json(['error' => 'News not found'], 404); 
          }
 
-         $event = Event::find($id);
+         $event = Event::find($id) 
+         ->where('status', 1);
          if(!$event){
              return response()->json(['error' => 'Event not found'], 404);
          } 
