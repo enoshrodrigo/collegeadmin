@@ -20,7 +20,7 @@ class ApiEventsController extends Controller
                 'id' => $event->id,
                 'title' => $event->title,
                 'description' => $event->description,
-              /*   'date' => $event->date, */
+                'date' => $event->date,
                 'photo' => $event->photos[0]['photo'] ?? null, // Get the first photo or null if no photos
             ];
         });
@@ -30,26 +30,23 @@ class ApiEventsController extends Controller
 
     public function show($id)
     {
-        
-        if(!$id){
-            return response()->json(['error' => 'News not found'], 404); 
-         }
+        $event = Event::where('id', $id)
+              ->where('status', 1)
+              ->first();
 
-         $event = Event::find($id) 
-         ->where('status', 1);
-         if(!$event){
-             return response()->json(['error' => 'Event not found'], 404);
-         } 
- 
-         $eventData = [
-             'id' => $event->id,
-             'title' => $event->title,
-             'description' => $event->description,
-             'link' => $event->link,
-             'date' => $event->date,
-             'photos' => $event->photos, // Include the full photos array
-         ];
+if (!$event) {
+    return response()->json(['error' => 'Event not found'], 404);
+}
 
-        return response()->json($eventData);
+$eventData = [
+    'id'          => $event->id,
+    'title'       => $event->title,
+    'description' => $event->description,
+    'link'        => $event->link,
+    'date'        => $event->date,
+    'photos'      => $event->photos, // Include the full photos array
+];
+
+return response()->json($eventData);
     }
 }
