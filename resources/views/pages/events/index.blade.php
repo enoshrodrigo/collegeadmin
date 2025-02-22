@@ -30,7 +30,13 @@
                     @endif
                     <div class="p-4 flex flex-col flex-grow">
                         <h2 class="text-xl font-bold text-gray-900 mb-2">{{ $event->title }}</h2>
-                        <div class="mt-1text-gray-600 mb-4 line-clamp-3">{!! $event->description !!}</div>
+                        <div class="mt-1text-gray-600 mb-2 line-clamp-3">{!! $event->description !!}</div>
+                        <div class="text-gray-600 mb-2">
+                            <span class="font-semibold">Date:</span> {{ $event->date }} <span class="px-2 py-1 text-sm rounded-full {{ $event->status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                {{ $event->status ? 'Active' : 'Inactive' }}
+                            </span>
+                          </div>  
+                      
                         @if($event->link)
                             <a href="{{ $event->link }}" target="_blank" class="text-blue-600 hover:underline mb-4">
                                 View More Photos

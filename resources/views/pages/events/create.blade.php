@@ -40,8 +40,8 @@
                         <label for="status" class="block text-gray-700 font-semibold">Status</label>
                         <select name="status" id="status"
                                 class="mt-1 block w-full rounded-md border border-gray-300 px-4 py-2 focus:ring focus:ring-blue-300">
-                            <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Online</option>
-                            <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Offline</option>
+                            <option value="1" {{ old('status') == 1 ? 'selected' : '' }}>Active</option>
+                            <option value="0" {{ old('status') == 0 ? 'selected' : '' }}>Inactive</option>
                         </select>
                         @error('status')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
