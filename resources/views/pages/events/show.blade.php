@@ -3,6 +3,17 @@
         <!-- Event Details -->
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-gray-900">{{ $event->title }}</h1>
+            <div class="mt-2 text-gray-600">
+                <span class="font-semibold">Date:</span> {{ $event->date }}
+            </div>
+            {{-- status 0 or 1 active or inactive with red or green color--}}
+            <div class="mt-2 text-gray-600">
+                <span class="font-semibold">Status:</span>
+                <span class="px-2 py-1 text-sm rounded-full {{ $event->status ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                    {{ $event->status ? 'Active' : 'Inactive' }}
+                </span>
+            </div>
+           
             <div class="mt-2 text-gray-600  prose">{!! $event->description !!}</div>
             @if($event->link)
                 <a href="{{ $event->link }}" target="_blank" class="mt-2 inline-block text-blue-600 hover:underline">

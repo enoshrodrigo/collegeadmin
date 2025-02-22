@@ -95,9 +95,9 @@
                   <a class="d-flex align-items-center border-bottom pb-3">
                     <div class="me-3">
                       @if ($news->status == 1)
-                      <span class="badge rounded-circle wd-50  align-content-center text-bold  badge-true bg-green-600" style="height:50px">{{ 'Online'}}</label>
+                      <span class="badge rounded-circle wd-50  align-content-center text-bold  badge-true bg-green-600" style="height:50px">{{ 'Active'}}</label>
                     @else
-                      <span class="badge rounded-circle wd-50  align-content-center text-bold badge-danger bg-red-600" style="height:50px">{{ 'Offline' }}</label>
+                      <span class="badge rounded-circle wd-50  align-content-center text-bold badge-danger bg-red-600" style="height:50px">{{ 'Inactive' }}</label>
                     @endif
                       
                     </div>
@@ -157,7 +157,7 @@
                         @if ($event->status == 1)
                           <label class="badge badge-true bg-green-600  ">{{ 'Active'}}</label>
                         @else
-                          <label class="badge badge-danger bg-red-600">{{ 'Disabled' }}</label>
+                          <label class="badge badge-danger bg-red-600">{{ 'Inactive' }}</label>
                         @endif
                       </td>
                     </tr>

@@ -28,14 +28,18 @@ class EventController extends Controller
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
             'link'        => 'nullable|url',
+            'status'      => 'required|string',
             'photos'      => 'nullable|array', // Ensure photos is an array
             'photos.*'    => 'nullable|image|max:2048',
+            'date'        => 'nullable|date',
         ]);
 
         $event = Event::create([
             'title'       => $validated['title'],
             'description' => $validated['description'],
             'link'        => $validated['link'] ?? null,
+            'status'      => $validated['status'],
+            'date'        => $validated['date'] ?? now(),
         ]);
 
         if ($request->hasFile('photos')) {
@@ -82,14 +86,18 @@ class EventController extends Controller
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
             'link'        => 'nullable|url',
+            'status'      => 'required|string',
             'photos'      => 'nullable|array',
             'photos.*'    => 'nullable|image|max:2048',
+            'date'        => 'nullable|date',
         ]);
-
+ 
         $event->update([
             'title'       => $validated['title'],
             'description' => $validated['description'],
             'link'        => $validated['link'] ?? null,
+            'status'      => $validated['status'],
+            'date'        => $validated['date'] ?? now(),
         ]);
 
         if ($request->hasFile('photos')) {
