@@ -20,16 +20,16 @@ class DashboardController extends Controller
         $totalIntakes = Intake::count();
         
         // Latest News (Paginated)
-        $latestNews = News::latest()->paginate(5, ['*'], 'news_page');
+        $latestNews = News::latest()->paginate(10, ['*'], 'news_page');
         
         // Upcoming Events (Paginated, assuming 'event_date' is a field on Event model)\n 
-        $upcomingEvents = Event::latest()->paginate(5, ['*'], 'events_page');
+        $events = Event::latest()->paginate(10, ['*'], 'events_page');
         
         // Recent Admissions (Paginated)
-        $recentAdmissions = Admission::latest()->paginate(5, ['*'], 'admissions_page');
+        $recentAdmissions = Admission::latest()->paginate(10, ['*'], 'admissions_page');
         
         // Intake Batches (Paginated, assuming 'start_date' is a field on Intake model)
-        $intakeBatches = Intake::orderBy('date', 'asc')->paginate(5, ['*'], 'intakes_page');
+        $intakeBatches = Intake::orderBy('date', 'asc')->paginate(10, ['*'], 'intakes_page');
         
         return view('dashboard', compact(
             'totalNews',
@@ -37,7 +37,7 @@ class DashboardController extends Controller
             'totalAdmissions',
             'totalIntakes',
             'latestNews',
-            'upcomingEvents',
+            'events',
             'recentAdmissions',
             'intakeBatches'
         ));

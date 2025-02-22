@@ -15,6 +15,6 @@ class Admission extends Model
 
     public function intake()
     {
-        return $this->belongsTo(Intake::class);
+        return $this->belongsTo(Intake::class, 'intake_id');
     }
 }

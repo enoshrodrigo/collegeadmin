@@ -1,8 +1,11 @@
 <x-app-layout>
-  <div class="container mx-auto p-6">
-    <!-- Dashboard Header -->
-    <h2 class="text-2xl font-semibold mb-4">Welcome to Mazenod College Dashboard</h2>
-    
+  <div class="page-content">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+      <div>
+        <h4 class="mb-3 mb-md-0">Welcome to Mazenod College Dashboard</h4>
+      </div>
+    </div>
     <!-- Summary Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       <!-- Total News Card -->
@@ -17,7 +20,7 @@
           </svg>
         </div>
         <div>
-          <h3 class="text-lg font-semibold">TotalCollege News</h3>
+          <h3 class="text-lg font-semibold">Total News</h3>
           <p class="text-2xl font-bold">{{ $totalNews }}</p>
         </div>
       </div>
@@ -76,115 +79,177 @@
         </div>
       </div>
     </div>
-    
-    <!-- Tables Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <!-- Latest News Table -->
-      <div class="bg-white shadow-lg rounded-lg p-4">
-        <h3 class="text-lg font-semibold mb-4">College News Latest News</h3>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left">
-            <thead>
-              <tr class="border-b bg-gray-50">
-                <th class="p-3">Title</th>
-                <th class="p-3">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($latestNews as $news)
-                <tr class="border-b hover:bg-gray-100">
-                  <td class="p-3">{{ $news->title }}</td>
-                  <td class="p-3">{{ $news->created_at->format('Y-m-d') }}</td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
-        </div>
-        <div class="mt-4">
-          {{ $latestNews->onEachSide(1)->links() }}
+    <!--end Summary Cards -->
+    <div class="row">
+
+
+    <div class="col-lg-5 col-xl-4 grid-margin grid-margin-xl-0 stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-baseline mb-2">
+                  <h6 class="card-title mb-2">News</h6>
+                 
+                </div>
+                <div class="d-flex flex-column">
+                   @foreach ($latestNews as $news)
+                  <a class="d-flex align-items-center border-bottom pb-3">
+                    <div class="me-3">
+                      @if ($news->status == 1)
+                      <span class="badge rounded-circle wd-50  align-content-center text-bold  badge-true bg-green-600" style="height:50px">{{ 'Online'}}</label>
+                    @else
+                      <span class="badge rounded-circle wd-50  align-content-center text-bold badge-danger bg-red-600" style="height:50px">{{ 'Offline' }}</label>
+                    @endif
+                      
+                    </div>
+                   
+                    <div class="w-100">
+                      <div class="d-flex justify-content-between">
+                        <h6 class="text-body mb-2 ">{{ $news -> title }}</h6>
+                        <p class="text-muted
+                        tx-12">{{ $news -> created_at }}</p>
+                      </div>
+                          {{-- if action is link give me p tag other wise its route as _blank to  --}}
+                     <p class="text-muted tx-13 hover:text-primary" 
+   style="cursor: pointer;" 
+   onclick="window.location.href='{{ $news->action == 'link' ? $news->action_link : route('news.show', $news->id) }}';">
+   {{$news->button_text }}
+</p>
+
+                    </div>
+                   
+                  </a>
+                  @endforeach
+                 
+                </div>
+              </div>
+              <div class="mt-4">
+                {{ $latestNews->onEachSide(1)->links() }}
+              </div>
+            </div>
+            
+          </div>
+
+
+      <div class="col-lg-7 col-xl-8 stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-baseline mb-2">
+              <h6 class="card-title mb-2">Events</h6>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th class="pt-0">#</th>
+                    <th class="pt-0">Event Name</th>
+                    <th class="pt-0">Date</th> 
+                    <th class="pt-0">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach ($events as $event)
+                    <tr>
+                      <td>{{ $loop->iteration }}</td>
+                      <td>{{ $event->title }}</td>
+                      <td>{{ $event->created_at }}</td>
+                       
+                      <td>
+                        @if ($event->status == 1)
+                          <label class="badge badge-true bg-green-600  ">{{ 'Active'}}</label>
+                        @else
+                          <label class="badge badge-danger bg-red-600">{{ 'Disabled' }}</label>
+                        @endif
+                      </td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+              <div class="mt-4">
+                {{ $events->onEachSide(1)->links() }}
+              </div>
+            </div>
+          </div> 
         </div>
       </div>
-      
-      <!-- Upcoming Events Table -->
-      <div class="bg-white shadow-lg rounded-lg p-4">
-        <h3 class="text-lg font-semibold mb-4">Events and Photos</h3>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left">
-            <thead>
-              <tr class="border-b bg-gray-50">
-                <th class="p-3">Event Name</th>
-                <th class="p-3">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($upcomingEvents as $event)
-                <tr class="border-b hover:bg-gray-100">
-                  <td class="p-3">{{ $event->title }}</td>
-                  <td class="p-3">{{ $event->created_at->format('Y-m-d') }}</td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
+
+    </div>
+    
+    <!-- row -->
+
+ <div class="row  mt-4 ">
+  <div class="col-lg-5 col-xl-4 grid-margin grid-margin-xl-0 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-baseline mb-2">
+          <h6 class="card-title mb-2">Admissions</h6>
+         
         </div>
-        <div class="mt-4">
-          {{ $upcomingEvents->onEachSide(1)->links() }}
+        <div class="d-flex flex-column">
+           @foreach ($recentAdmissions as $admissions)
+          <a class="d-flex align-items-center border-bottom pb-3">
+            <div class="me-3"> 
+              <span class="badge rounded-circle wd-50  align-content-center text-bold badge-danger bg-red-600" style="height:50px">{{ $loop->iteration}}</label>
+         
+              
+            </div>
+           
+            <div class="w-100">
+              <div class="d-flex justify-content-between">
+                <h6 class="text-body mb-2 ">{{ $admissions -> name   }}</h6>
+                <p class="text-muted
+                tx-12">{{ $admissions -> dob }}</p>
+              </div>
+              @php
+              $intakeName = collect($intakeBatches->items())->firstWhere('id', $admissions->intake_id)->name ?? '-';
+            
+         @endphp
+             <p class="text-muted tx-13 hover:text-primary" 
+style="cursor: pointer;" 
+onclick="window.location.href='{{ $news->action == 'link' ? $news->action_link : route('news.show', $news->id) }}';">
+{{ $intakeName }}
+</p>
+
+            </div>
+           
+          </a>
+          @endforeach
+         
         </div>
+      </div>
+      <div class="mt-4">
+        {{ $latestNews->onEachSide(1)->links() }}
       </div>
     </div>
     
-    <!-- Admissions & Intakes Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-      <!-- Recent Admissions Table -->
-      <div class="bg-white shadow-lg rounded-lg p-4">
-        <h3 class="text-lg font-semibold mb-4">Recent Admissions</h3>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left">
-            <thead>
-              <tr class="border-b bg-gray-50">
-                <th class="p-3">Student Name</th>
-                <th class="p-3">Admission Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($recentAdmissions as $admission)
-                <tr class="border-b hover:bg-gray-100">
-                  <td class="p-3">{{ $admission->name }}</td>
-                  <td class="p-3">{{ $admission->created_at->format('Y-m-d') }}</td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
-        </div>
-        <div class="mt-4">
-          {{ $recentAdmissions->onEachSide(1)->links() }}
-        </div>
-      </div>
-      
-      <!-- Intake Batches Table -->
-      <div class="bg-white shadow-lg rounded-lg p-4">
-        <h3 class="text-lg font-semibold mb-4">Intake Batches</h3>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left">
-            <thead>
-              <tr class="border-b bg-gray-50">
-                <th class="p-3">Intake Name</th>
-                <th class="p-3">Start Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($intakeBatches as $intake)
-                <tr class="border-b hover:bg-gray-100">
-                  <td class="p-3">{{ $intake->name }}</td>
-                  <td class="p-3">{{ $intake->date }}</td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
-        </div>
-        <div class="mt-4">
-          {{ $intakeBatches->onEachSide(1)->links() }}
+  </div>
+
+
+  <div class="col-lg-7 col-xl-8 stretch-card">
+    <div class="card " style="
+    background-color: #ECF4F1;
+    border: solid 1px #F0F4E3;
+    box-shadow: 0px 1px 5px 1px #ffffff;
+">
+      <div class="card-body  "> 
+        <div class="contact-info  ">
+          <div class="contact-info-title text-center mb-4 px-5">
+            <h3 class="mb-1">School Calendar</h3>
+            <div class="calendar-embed mt-4  ">
+              <div class="ratio ratio-16x9  ">
+                <iframe src="https://calendar.google.com/calendar/embed?src=mazenodanuradhapura%40gmail.com&ctz=Asia%2FColombo" style="border:0;  " allowfullscreen></iframe>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  </div>
+  
+  <!-- row -->
+
+
+  </div>
+  <!-- Page Content Ends -->
 </x-app-layout>

@@ -18,6 +18,8 @@ export default defineConfig({
                 'resources/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js',
                 'resources/vendors/apexcharts/apexcharts.min.js',
                 'resources/vendors/feather-icons/feather.min.js',
+                'resources/vendors/core/core.js',
+                'resources/vendors/core/core.css',
                 'resources/js/template.js',
                 'resources/js/dashboard-light.js',
                 'resources/js/datepicker.js'
@@ -26,7 +28,6 @@ export default defineConfig({
         }),
     ],
     build: {
-        sourcemap: true, // Disable source map generation
-
+        sourcemap: true, // Enable source map generation
     },
 });

@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-Cr6ugYx4.css",
+    "file": "assets/app-CNubbGlI.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -70,6 +70,17 @@
     "file": "assets/Chart.min-fGcuhcdS.js",
     "name": "Chart.min",
     "src": "resources/vendors/chartjs/Chart.min.js",
+    "isEntry": true
+  },
+  "resources/vendors/core/core.css": {
+    "file": "assets/core-DacXfeD8.css",
+    "src": "resources/css/core.css",
+    "isEntry": true
+  },
+  "resources/vendors/core/core.js": {
+    "file": "assets/core-CUOSM228.js",
+    "name": "core",
+    "src": "resources/vendors/core/core.js",
     "isEntry": true
   },
   "resources/vendors/feather-icons/feather.min.js": {

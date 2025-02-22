@@ -13,30 +13,28 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-        {{-- load feather icons throug a link js and all files --}}
+        {{-- load feather icons through a link js and all files --}}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css">
         <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.2/dist/cdn.min.js"></script> 
-
-       
-        
+         
         <!-- Styles -->
-
-        
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @vite(['resources/css/core.css', 'resources/js/core.js'])
-        @vite(['resources/css/bootstrap-datepicker.min.css'])
-        @vite(['resources/fonts/iconfont.css'])
-        @vite(['resources/css/style.css'])
-
-        <!-- Plugin js for this page -->
         @vite([
+            'resources/css/app.css',
+            'resources/js/app.js',
+            'resources/css/core.css',
+            'resources/js/core.js',
+            'resources/css/bootstrap-datepicker.min.css',
+            'resources/fonts/iconfont.css',
+            'resources/css/style.css',
             'resources/vendors/chartjs/Chart.min.js',
             'resources/vendors/jquery.flot/jquery.flot.js',
             'resources/vendors/jquery.flot/jquery.flot.resize.js',
             'resources/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js',
             'resources/vendors/apexcharts/apexcharts.min.js',
             'resources/vendors/feather-icons/feather.min.js',
+            'resources/vendors/core/core.js',
+            'resources/vendors/core/core.css',
             'resources/js/template.js',
             'resources/js/dashboard-light.js',
             'resources/js/datepicker.js'
@@ -54,12 +52,8 @@
 
             <!-- Main Content Area -->
             <main class="page-content p-5 w-full ">
-                {{ $slot }}
- 
-           
-               
+                {{ $slot }} 
             </main>
-            
         </div>
 
         @stack('modals')
@@ -69,7 +63,6 @@
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 feather.replace();
-
             });
         </script>
     </body>
