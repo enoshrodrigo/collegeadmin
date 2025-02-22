@@ -111,7 +111,7 @@
                           {{-- if action is link give me p tag other wise its route as _blank to  --}}
                      <p class="text-muted tx-13 hover:text-primary" 
    style="cursor: pointer;" 
-   onclick="window.location.href='{{ $news->action == 'link' ? $news->action_link : route('news.show', $news->id) }}';">
+   onclick="window.open('{{ $news->action == 'link' ? $news->action_link : route('news.show', $news->id) }}', '_blank');">
    {{$news->button_text }}
 </p>
 
@@ -203,9 +203,7 @@
               $intakeName = collect($intakeBatches->items())->firstWhere('id', $admissions->intake_id)->name ?? '-';
             
          @endphp
-             <p class="text-muted tx-13 hover:text-primary" 
-style="cursor: pointer;" 
-onclick="window.location.href='{{ $news->action == 'link' ? $news->action_link : route('news.show', $news->id) }}';">
+             <p class="text-muted tx-13 hover:text-primary">
 {{ $intakeName }}
 </p>
 
