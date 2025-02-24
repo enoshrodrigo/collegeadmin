@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="mx-auto py-8">
         <!-- Card Container -->
-        <div class="bg-white shadow rounded-lg p-6  m-auto" style="max-width: fit-content;">
+        <div class="bg-white shadow rounded-lg p-6 m-auto" style="max-width: fit-content;">
             <h1 class="text-3xl font-bold mb-5 text-center">Edit Event</h1>
             <form action="{{ route('events.update', $event->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
@@ -26,7 +26,7 @@
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
-                    {{-- date --}}
+                    {{-- Date --}}
                     <div class="mb-1">
                         <label for="date" class="block text-gray-700 font-semibold">Date</label>
                         <input type="date" name="date" id="date" value="{{ old('date', $event->date) }}" required
@@ -35,7 +35,7 @@
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
-                    {{-- status --}}
+                    {{-- Status --}}
                     <div class="mb-1">
                         <label for="status" class="block text-gray-700 font-semibold">Status</label>
                         <select name="status" id="status" class="mt-1 block w-full rounded-md border border-gray-300 px-4 py-2 focus:ring focus:ring-blue-300">
@@ -62,21 +62,24 @@
                 </div>
                 
                 <!-- Existing Photos (Full width) -->
+                <!-- A hidden input to store the order of existing photos -->
+                <input type="hidden" name="existing_order" id="existing_order" value="{{ implode(',', $event->photos->pluck('id')->toArray()) }}">
                 <div id="existing-photos" class="mt-4 grid grid-cols-3 gap-2">
                     @foreach ($event->photos as $photo)
-                        <div class="relative border rounded-lg overflow-hidden">
+                        <div class="relative border rounded-lg overflow-hidden" data-id="{{ $photo->id }}">
                             <img src="{{ Storage::url($photo->photo) }}" class="w-full h-24 object-cover rounded-md">
                         </div>
                     @endforeach
                 </div>
                 
-                <!-- Upload Photos (Full width) -->
+                <!-- Upload New Photos (Full width) -->
                 <div id="drop-area" class="mt-4 border-2 border-dashed border-gray-300 p-6 rounded-lg text-center bg-gray-100 hover:bg-gray-200 transition">
                     <input type="file" name="photos[]" id="photos" multiple class="hidden" accept="image/*">
                     <p class="text-gray-500">
                         Drag & drop photos here or 
                         <span class="text-blue-500 cursor-pointer hover:underline" id="file-select">browse</span>
                     </p>
+                    <!-- Preview container for new images (sortable) -->
                     <div id="preview" class="mt-4 grid grid-cols-3 gap-2"></div>
                 </div>
                 
@@ -99,10 +102,12 @@
     <!-- Include Quill CSS & JS -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <!-- Include SortableJS for reordering images -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // Initialize Quill Editor with placeholder and existing content
+            // Initialize Quill Editor
             var quill = new Quill("#editor", {
                 theme: "snow",
                 placeholder: "Write event description here...",
@@ -125,21 +130,34 @@
             function updateHiddenInput() {
                 document.getElementById("hidden-description").value = quill.root.innerHTML;
             }
-            
             updateHiddenInput();
             quill.on('text-change', updateHiddenInput);
+            document.querySelector("form").addEventListener("submit", updateHiddenInput);
             
-            // Also update hidden input on form submission
-            var form = document.querySelector("form");
-            form.addEventListener("submit", updateHiddenInput);
+            // --------- Existing Photos Reordering -----------
+            // Initialize SortableJS on existing photos container
+            var existingPhotosContainer = document.getElementById("existing-photos");
+            Sortable.create(existingPhotosContainer, {
+                animation: 150,
+                onEnd: function () {
+                    let newOrder = [];
+                    existingPhotosContainer.childNodes.forEach(child => {
+                        if(child.nodeType === 1) { // element node
+                            newOrder.push(child.getAttribute("data-id"));
+                        }
+                    });
+                    document.getElementById("existing_order").value = newOrder.join(',');
+                }
+            });
             
-            // File Upload Logic
+            // --------- New Photos Upload & Reordering -----------
             const fileInput = document.getElementById("photos");
             const dropArea = document.getElementById("drop-area");
             const fileSelect = document.getElementById("file-select");
             const previewContainer = document.getElementById("preview");
     
             let selectedFiles = [];
+            let fileCounter = 0; // unique id counter for new files
     
             fileSelect.addEventListener("click", () => fileInput.click());
     
@@ -164,10 +182,12 @@
                 Array.from(files).forEach(file => {
                     if (!file.type.startsWith("image/")) return;
     
-                    selectedFiles.push(file);
+                    const id = fileCounter++;
+                    selectedFiles.push({ id: id, file: file });
     
                     const imgContainer = document.createElement("div");
                     imgContainer.classList.add("relative", "border", "rounded-lg", "overflow-hidden");
+                    imgContainer.setAttribute("data-id", id);
     
                     const img = document.createElement("img");
                     img.src = URL.createObjectURL(file);
@@ -179,7 +199,7 @@
                     removeBtn.addEventListener("click", function(e) {
                         e.preventDefault();
                         previewContainer.removeChild(imgContainer);
-                        selectedFiles = selectedFiles.filter(f => f !== file);
+                        selectedFiles = selectedFiles.filter(item => item.id !== id);
                         updateFileInput();
                     });
     
@@ -192,9 +212,29 @@
     
             function updateFileInput() {
                 const dataTransfer = new DataTransfer();
-                selectedFiles.forEach(file => dataTransfer.items.add(file));
+                // Reorder selectedFiles based on the DOM order in the preview container
+                const newOrder = [];
+                previewContainer.childNodes.forEach(child => {
+                    if(child.nodeType === 1) {
+                        const id = parseInt(child.getAttribute("data-id"));
+                        const fileObj = selectedFiles.find(item => item.id === id);
+                        if(fileObj) {
+                            newOrder.push(fileObj);
+                        }
+                    }
+                });
+                selectedFiles = newOrder;
+                selectedFiles.forEach(item => dataTransfer.items.add(item.file));
                 fileInput.files = dataTransfer.files;
             }
+    
+            // Initialize SortableJS on new photos preview container
+            Sortable.create(previewContainer, {
+                animation: 150,
+                onEnd: function() {
+                    updateFileInput();
+                }
+            });
         });
     </script>
 </x-app-layout>
