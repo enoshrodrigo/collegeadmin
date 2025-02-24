@@ -15,8 +15,7 @@ class EventController extends Controller
         $totalEvents = Event::count();
         $activeEvents = Event::where('status', 1)->count();
         $inactiveEvents = Event::where('status', 0)->count();
-        return view('pages.events.index', compact('events',
-            'totalEvents', 'activeEvents', 'inactiveEvents'));
+        return view('pages.events.index', compact('events', 'totalEvents', 'activeEvents', 'inactiveEvents'));
     }
 
     // Show form for creating an event
@@ -47,9 +46,9 @@ class EventController extends Controller
         ]);
 
         if ($request->hasFile('photos')) {
-            foreach ($request->file('photos') as $photo) {
+            // Use the order in which the files appear (client-side reordering updates file input order)
+            foreach ($request->file('photos') as $index => $photo) {
                 if ($photo->isValid()) {
-                    // Set destination path in storage/events/{event_id}
                     $destinationPath = storage_path("events/{$event->id}");
                     if (!file_exists($destinationPath)) {
                         mkdir($destinationPath, 0777, true);
@@ -61,6 +60,7 @@ class EventController extends Controller
                     EventPhoto::create([
                         'event_id' => $event->id,
                         'photo'    => $path,
+                        'order'    => $index + 1,
                     ]);
                 }
             }
@@ -104,8 +104,12 @@ class EventController extends Controller
             'date'        => $validated['date'] ?? now(),
         ]);
 
+        // Process new photo uploads
         if ($request->hasFile('photos')) {
-            foreach ($request->file('photos') as $photo) {
+            // New photos will be appended after existing photos.
+            // Get the current count of existing photos.
+            $currentCount = EventPhoto::where('event_id', $event->id)->count();
+            foreach ($request->file('photos') as $index => $photo) {
                 if ($photo->isValid()) {
                     $destinationPath = storage_path("events/{$event->id}");
                     if (!file_exists($destinationPath)) {
@@ -118,8 +122,20 @@ class EventController extends Controller
                     EventPhoto::create([
                         'event_id' => $event->id,
                         'photo'    => $path,
+                        // New photos get an order value starting after existing photos
+                        'order'    => $currentCount + $index + 1,
                     ]);
                 }
+            }
+        }
+
+        // Update order of existing photos using the hidden input 'existing_order'
+        if ($request->has('existing_order')) {
+            $order = explode(',', $request->input('existing_order'));
+            foreach ($order as $position => $photoId) {
+                EventPhoto::where('id', $photoId)
+                    ->where('event_id', $event->id)
+                    ->update(['order' => $position + 1]);
             }
         }
 
