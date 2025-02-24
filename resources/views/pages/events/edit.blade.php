@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="max-w-3xl mx-auto py-8">
+    <div class="mx-auto py-8">
         <!-- Card Container -->
         <div class="bg-white shadow rounded-lg p-6  m-auto" style="max-width: fit-content;">
             <h1 class="text-3xl font-bold mb-5 text-center">Edit Event</h1>
