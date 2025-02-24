@@ -1,24 +1,24 @@
 <x-app-layout>
-    <div class="  mx-auto py-8">
+    <div class="mx-auto py-8">
         <!-- Card Container -->
-        <div class="bg-white shadow rounded-lg p-6    m-auto" style="max-width:fit-content;">
+        <div class="bg-white shadow rounded-lg p-6 m-auto" style="max-width:fit-content;">
             <h1 class="text-3xl font-bold mb-5 text-center">Create Event</h1>
             <!-- Form with grid layout -->
             <form action="{{ route('events.store') }}" method="POST" enctype="multipart/form-data" onsubmit="submitEditorContent()">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Event Title -->
-                    <div class="mb-1 ">
+                    <div class="mb-1">
                         <label for="title" class="block text-gray-700 font-semibold">Event Title</label>
-                        <input type="text"  name="title" id="title" value="{{ old('title') }}" required
-                               class="mt-1   block w-full rounded-md border border-gray-800 px-4 py-2 focus:ring focus:ring-blue-300">
+                        <input type="text" name="title" id="title" value="{{ old('title') }}" required
+                               class="mt-1 block w-full rounded-md border border-gray-800 px-4 py-2 focus:ring focus:ring-blue-300">
                         @error('title')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
                   
                     <!-- More Photos Link -->
-                    <div class="  mb-1   ">
+                    <div class="mb-1">
                         <label for="link" class="block text-gray-700 font-semibold">More Photos Link (Optional)</label>
                         <input type="url" name="link" id="link" value="{{ old('link') }}"
                                class="mt-1 block w-full rounded-md border border-gray-300 px-4 py-2 focus:ring focus:ring-blue-300">
@@ -26,17 +26,19 @@
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="  mb-1   ">
-                        <label for="link" class="block text-gray-700 font-semibold">Date</label>
+                    
+                    <!-- Date -->
+                    <div class="mb-1">
+                        <label for="date" class="block text-gray-700 font-semibold">Date</label>
                         <input type="date" name="date" id="date" value="{{ old('date') }}"
                                class="mt-1 block w-full rounded-md border border-gray-300 px-4 py-2 focus:ring focus:ring-blue-300" required>
                         @error('date')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
-{{-- STATUS 0 OR 1 --}}
-                   
-                    <div class="  mb-1   ">
+                    
+                    <!-- Status -->
+                    <div class="mb-1">
                         <label for="status" class="block text-gray-700 font-semibold">Status</label>
                         <select name="status" id="status"
                                 class="mt-1 block w-full rounded-md border border-gray-300 px-4 py-2 focus:ring focus:ring-blue-300">
@@ -69,6 +71,7 @@
                                 Drag & drop photos here or 
                                 <span class="text-blue-500 cursor-pointer hover:underline" id="file-select">browse</span>
                             </p>
+                            <!-- Preview container: now sortable -->
                             <div id="preview" class="mt-4 grid grid-cols-3 gap-2"></div>
                         </div>
                         @error('photos.*')
@@ -96,6 +99,8 @@
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <!-- Include SweetAlert2 for confirmation popups -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Include SortableJS for reordering images -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
     
     <script>
       // Initialize Quill editor
@@ -107,14 +112,12 @@
                   [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
                   [{size: []}],
                   ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                  [{'list': 'ordered'}, {'list': 'bullet'}, 
-                   {'indent': '-1'}, {'indent': '+1'}],
+                  [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
                   ['link'],
                   ['clean'],
-                    ['code-block'],
-                    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-                    [{ 'align': [] }],                                  // dropdown with defaults from theme
-                
+                  ['code-block'],
+                  [{ 'color': [] }, { 'background': [] }],
+                  [{ 'align': [] }]
               ]
           }
       });
@@ -125,7 +128,7 @@
           descriptionInput.value = quill.root.innerHTML;
       }
       
-      // File upload functionality with SweetAlert2 confirmation for removal
+      // File upload functionality with image reordering using SortableJS
       document.addEventListener("DOMContentLoaded", function () {
           const fileInput = document.getElementById("photos");
           const dropArea = document.getElementById("drop-area");
@@ -133,6 +136,7 @@
           const previewContainer = document.getElementById("preview");
     
           let selectedFiles = [];
+          let fileCounter = 0; // unique id counter for each file
     
           fileSelect.addEventListener("click", () => fileInput.click());
     
@@ -156,11 +160,14 @@
           function handleFiles(files) {
               Array.from(files).forEach(file => {
                   if (!file.type.startsWith("image/")) return;
-    
-                  selectedFiles.push(file);
+                  
+                  // Assign a unique id to each file and push as an object
+                  const id = fileCounter++;
+                  selectedFiles.push({ id: id, file: file });
     
                   const imgContainer = document.createElement("div");
                   imgContainer.classList.add("relative", "border", "rounded-lg", "overflow-hidden");
+                  imgContainer.setAttribute("data-id", id);
     
                   const img = document.createElement("img");
                   img.src = URL.createObjectURL(file);
@@ -183,7 +190,8 @@
                       }).then((result) => {
                           if (result.isConfirmed) {
                               previewContainer.removeChild(imgContainer);
-                              selectedFiles = selectedFiles.filter(f => f !== file);
+                              // Remove from selectedFiles based on id
+                              selectedFiles = selectedFiles.filter(item => item.id !== id);
                               updateFileInput();
                               Swal.fire({
                                   title: 'Removed!',
@@ -205,9 +213,27 @@
     
           function updateFileInput() {
               const dataTransfer = new DataTransfer();
-              selectedFiles.forEach(file => dataTransfer.items.add(file));
+              selectedFiles.forEach(item => dataTransfer.items.add(item.file));
               fileInput.files = dataTransfer.files;
           }
+    
+          // Initialize SortableJS on the preview container for drag & drop reordering
+          Sortable.create(previewContainer, {
+              animation: 150,
+              onEnd: function() {
+                  // Reorder the selectedFiles array based on the new DOM order
+                  const newOrder = [];
+                  previewContainer.childNodes.forEach(child => {
+                      const id = parseInt(child.getAttribute("data-id"));
+                      const fileObj = selectedFiles.find(item => item.id === id);
+                      if (fileObj) {
+                          newOrder.push(fileObj);
+                      }
+                  });
+                  selectedFiles = newOrder;
+                  updateFileInput();
+              }
+          });
       });
     </script>
 </x-app-layout>
