@@ -1,17 +1,7 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-E0gal_3A.css",
+    "file": "assets/app-DAppuVFM.css",
     "src": "resources/css/app.css",
-    "isEntry": true
-  },
-  "resources/css/bootstrap-datepicker.min.css": {
-    "file": "assets/bootstrap-datepicker-qElmq25k.css",
-    "src": "resources/css/bootstrap-datepicker.min.css",
-    "isEntry": true
-  },
-  "resources/css/core.css": {
-    "file": "assets/core-DacXfeD8.css",
-    "src": "resources/css/core.css",
     "isEntry": true
   },
   "resources/css/style.css": {
@@ -19,86 +9,10 @@
     "src": "resources/css/style.css",
     "isEntry": true
   },
-  "resources/fonts/iconfont.css": {
-    "file": "assets/iconfont-CuKXsvG8.css",
-    "src": "resources/fonts/iconfont.css",
-    "isEntry": true
-  },
   "resources/js/app.js": {
     "file": "assets/app-CqflisoM.js",
     "name": "app",
     "src": "resources/js/app.js",
-    "isEntry": true
-  },
-  "resources/js/core.js": {
-    "file": "assets/core-C_tr_62y.js",
-    "name": "core",
-    "src": "resources/js/core.js",
-    "isEntry": true
-  },
-  "resources/js/dashboard-light.js": {
-    "file": "assets/dashboard-light-C5Rcmz_F.js",
-    "name": "dashboard-light",
-    "src": "resources/js/dashboard-light.js",
-    "isEntry": true
-  },
-  "resources/js/datepicker.js": {
-    "file": "assets/datepicker-Cunv5XpD.js",
-    "name": "datepicker",
-    "src": "resources/js/datepicker.js",
-    "isEntry": true
-  },
-  "resources/js/template.js": {
-    "file": "assets/template-BHseaqu2.js",
-    "name": "template",
-    "src": "resources/js/template.js",
-    "isEntry": true
-  },
-  "resources/vendors/apexcharts/apexcharts.min.js": {
-    "file": "assets/apexcharts.min-DYSDzd8L.js",
-    "name": "apexcharts.min",
-    "src": "resources/vendors/apexcharts/apexcharts.min.js",
-    "isEntry": true
-  },
-  "resources/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js": {
-    "file": "assets/bootstrap-datepicker.min-CzN_JL4j.js",
-    "name": "bootstrap-datepicker.min",
-    "src": "resources/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js",
-    "isEntry": true
-  },
-  "resources/vendors/chartjs/Chart.min.js": {
-    "file": "assets/Chart.min-fGcuhcdS.js",
-    "name": "Chart.min",
-    "src": "resources/vendors/chartjs/Chart.min.js",
-    "isEntry": true
-  },
-  "resources/vendors/core/core.css": {
-    "file": "assets/core-DacXfeD8.css",
-    "src": "resources/css/core.css",
-    "isEntry": true
-  },
-  "resources/vendors/core/core.js": {
-    "file": "assets/core-CUOSM228.js",
-    "name": "core",
-    "src": "resources/vendors/core/core.js",
-    "isEntry": true
-  },
-  "resources/vendors/feather-icons/feather.min.js": {
-    "file": "assets/feather.min-QxB7Vgtl.js",
-    "name": "feather.min",
-    "src": "resources/vendors/feather-icons/feather.min.js",
-    "isEntry": true
-  },
-  "resources/vendors/jquery.flot/jquery.flot.js": {
-    "file": "assets/jquery.flot-BHMJhsZQ.js",
-    "name": "jquery.flot",
-    "src": "resources/vendors/jquery.flot/jquery.flot.js",
-    "isEntry": true
-  },
-  "resources/vendors/jquery.flot/jquery.flot.resize.js": {
-    "file": "assets/jquery.flot.resize-BhYwnB12.js",
-    "name": "jquery.flot.resize",
-    "src": "resources/vendors/jquery.flot/jquery.flot.resize.js",
     "isEntry": true
   }
 }
