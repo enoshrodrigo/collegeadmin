@@ -10,7 +10,10 @@ class NewsController extends Controller
     public function index(Request $request)
     {
         $news = News::latest()->paginate(9);
-        return view('pages.news.index', compact('news'));
+        $totalNews = News::count();
+        $activeNews = News::where('status', 1)->count();
+        $inactiveNews = News::where('status', 0)->count();
+        return view('pages.news.index', compact('news', 'totalNews', 'activeNews', 'inactiveNews'));
     }
 
     public function create()
@@ -27,6 +30,8 @@ class NewsController extends Controller
             'button_text'   => 'required|string|max:50',
             'action'        => 'required|in:link,more_info',
             'action_link'   => 'nullable|required_if:action,link|url',
+            'status'        => 'required|string',
+            'date'          => 'nullable|date',
             'more_info'     => 'nullable|required_if:action,more_info|string',
         ]);
 
@@ -66,6 +71,8 @@ class NewsController extends Controller
             'button_text'   => 'required|string|max:50',
             'action'        => 'required|in:link,more_info',
             'action_link'   => 'nullable|required_if:action,link|url',
+            'status'        => 'required|string',
+            'date'          => 'nullable|date',
             'more_info'     => 'nullable|required_if:action,more_info|string',
         ]);
 

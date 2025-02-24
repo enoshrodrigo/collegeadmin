@@ -8,11 +8,36 @@ use Illuminate\Http\Request;
 class IntakeController extends Controller
 {
     // List all intakes (admin) with pagination
-    public function index()
+    public function index(Request $request)
     {
-        // Paginate results, 10 per page (adjust as needed)
-        $intakes = Intake::orderBy('name')->paginate(10);
-        return view('pages.intakes.index', compact('intakes'));
+        // Filter intakes based on the provided filters
+        $query = Intake::query();
+    
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+    
+        if ($request->filled('status')) {
+            $query->where('registration_enabled', $request->status);
+        }
+    
+        if ($request->filled('date')) {
+            $query->whereDate('date', $request->date);
+        }
+    
+        $intakes = $query->orderBy('name')->paginate(10);
+    
+        // Statistics
+        $totalIntakes = Intake::count();
+        $activeIntakes = Intake::where('registration_enabled', true)->count();
+        $inactiveIntakes = Intake::where('registration_enabled', false)->count();
+    
+        return view('pages.intakes.index', compact(
+            'intakes',
+            'totalIntakes',
+            'activeIntakes',
+            'inactiveIntakes'
+        ));
     }
 
     // Show the form to create a new intake

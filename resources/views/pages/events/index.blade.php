@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="  mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white shadow rounded-lg  m-auto ">
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-bold text-gray-900">Events Gallery</h1>
@@ -17,7 +17,7 @@
         @endif
 
    <!-- Statistics Cards -->
-   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6 ">
     <!-- Total Events -->
     <div class="flex items-center p-4 bg-white rounded-lg shadow">
       <div class="flex-shrink-0">
@@ -26,7 +26,7 @@
         </svg>
       </div>
       <div class="ml-4">
-        <p class="text-2xl font-semibold text-gray-700">{{ $total }}</p>
+        <p class="text-2xl font-semibold text-gray-700">{{ $totalEvents }}</p>
         <p class="text-sm text-gray-500">Total Events</p>
       </div>
     </div>
@@ -38,7 +38,7 @@
         </svg>
       </div>
       <div class="ml-4">
-        <p class="text-2xl font-semibold text-gray-700">{{ $active }}</p>
+        <p class="text-2xl font-semibold text-gray-700">{{ $activeEvents }}</p>
         <p class="text-sm text-gray-500">Active Events</p>
       </div>
     </div>
@@ -50,8 +50,8 @@
         </svg>
       </div>
       <div class="ml-4">
-        <p class="text-2xl font-semibold text-gray-700">{{ $offline }}</p>
-        <p class="text-sm text-gray-500">Offline Events</p>
+        <p class="text-2xl font-semibold text-gray-700">{{ $inactiveEvents }}</p>
+        <p class="text-sm text-gray-500">Inactive Events</p>
       </div>
     </div>
 </div>

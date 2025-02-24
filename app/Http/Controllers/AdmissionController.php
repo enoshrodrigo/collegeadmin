@@ -47,14 +47,32 @@ class AdmissionController extends Controller
             ->with('success', 'Your admission details have been submitted successfully. Please check your email for confirmation.');
     }
 
-    // (For admin) List all admissions along with statistics
+  
     public function index(Request $request)
     {
-        // Filter admissions if an intake is selected
+        // Filter admissions based on the provided filters
         $query = Admission::query();
+    
         if ($request->filled('intake_id')) {
             $query->where('intake_id', $request->intake_id);
         }
+    
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+    
+        if ($request->filled('email')) {
+            $query->where('email', 'like', '%' . $request->email . '%');
+        }
+    
+        if ($request->filled('mobile_no')) {
+            $query->where('mobile_no', 'like', '%' . $request->mobile_no . '%');
+        }
+    
+        if ($request->filled('dob')) {
+            $query->whereDate('dob', $request->dob);
+        }
+    
         $admissions = $query->latest()->paginate(10);
     
         // Statistics
@@ -71,7 +89,6 @@ class AdmissionController extends Controller
             'intakes'
         ));
     }
-    
 
     // (For admin) Show details of a single admission
     public function show(Admission $admission)

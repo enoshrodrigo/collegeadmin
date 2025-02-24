@@ -17,6 +17,8 @@ return new class extends Migration
             $table->text('description');
             $table->string('link')->nullable(); // URL for more photos
             $table->timestamps();
+            $table->dateTime('date')->nullable();
+            $table->tinyInteger('status')->default(1); // 1 = active, 0 = offline
         });
     }
 

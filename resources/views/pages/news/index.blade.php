@@ -1,8 +1,8 @@
 <x-app-layout>
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="px-4 sm:px-6 lg:px-4 py-8 bg-white shadow rounded-lg  m-auto">
         <!-- Header -->
         <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">News Management</h1>
+            <h1 class="text-3xl font-bold text-gray-900 text">News Management</h1>
             <a href="{{ route('news.create') }}"
                class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-wider hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -18,7 +18,45 @@
                 {{ session('success') }}
             </div>
         @endif
-
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+    <!-- Total News -->
+    <div class="flex items-center p-4 bg-white rounded-lg shadow">
+        <div class="flex-shrink-0">
+            <svg class="h-12 w-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7v4M5 7v4m2 0v6a2 2 0 002 2h6a2 2 0 002-2v-6m2-4H5a2 2 0 00-2 2v12a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2z" />
+            </svg>
+        </div>
+        <div class="ml-4">
+            <p class="text-2xl font-semibold text-gray-700">{{ $totalNews }}</p>
+            <p class="text-sm text-gray-500">Total News</p>
+        </div>
+    </div>
+    <!-- Active News -->
+    <div class="flex items-center p-4 bg-white rounded-lg shadow">
+        <div class="flex-shrink-0">
+            <svg class="h-12 w-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+        </div>
+        <div class="ml-4">
+            <p class="text-2xl font-semibold text-gray-700">{{ $activeNews }}</p>
+            <p class="text-sm text-gray-500">Active News</p>
+        </div>
+    </div>
+    <!-- Archived News -->
+    <div class="flex items-center p-4 bg-white rounded-lg shadow">
+        <div class="flex-shrink-0">
+            <svg class="h-12 w-12 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 00-7.07 17.07A10 10 0 0012 22a10 10 0 007.07-2.93A10 10 0 0012 2zm0 18a8 8 0 110-16 8 8 0 010 16zm0-14a6 6 0 100 12 6 6 0 000-12z" />
+            </svg>
+        </div>
+        <div class="ml-4">
+            <p class="text-2xl font-semibold text-gray-700">{{ $inactiveNews }}</p>
+            <p class="text-sm text-gray-500">Inactive News</p>
+        </div>
+    </div>
+</div>
         <!-- News Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach($news as $item)

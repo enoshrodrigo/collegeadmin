@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('button_text');
             $table->string('action'); // 'link' or 'more_info'
             $table->string('action_link')->nullable();
+            $table->tinyInteger('status')->default(1); // 1 = active, 0 = offline
+            $table->dateTime('date')->nullable();
             $table->text('more_info')->nullable();
             $table->timestamps();
         });
