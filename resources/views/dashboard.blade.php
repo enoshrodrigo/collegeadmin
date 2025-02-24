@@ -106,7 +106,7 @@
                       <div class="d-flex justify-content-between">
                         <h6 class="text-body mb-2 ">{{ $news -> title }}</h6>
                         <p class="text-muted
-                        tx-12">{{ $news -> created_at }}</p>
+                        tx-12">{{ $news -> date }}</p>
                       </div>
                           {{-- if action is link give me p tag other wise its route as _blank to  --}}
                      <p class="text-muted tx-13 hover:text-primary" 
@@ -140,19 +140,27 @@
               <table class="table table-hover mb-0">
                 <thead>
                   <tr>
-                    <th class="pt-0">#</th>
+                    
                     <th class="pt-0">Event Name</th>
                     <th class="pt-0">Date</th> 
+                    <th class="pt-0">Link</th> 
                     <th class="pt-0">Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   @foreach ($events as $event)
                     <tr>
-                      <td>{{ $loop->iteration }}</td>
+                     
                       <td>{{ $event->title }}</td>
-                      <td>{{ $event->created_at }}</td>
-                       
+                      <td>{{ $event->date }}</td>
+                       {{-- if link availble then show link button go to new tab and oprn if its empty or null just gray the link  --}}
+                      <td>
+                        @if ($event->link)
+                          <a href="{{ $event->link }}" target="_blank" class="text-blue-600 hover:underline">View More Photos</a>
+                        @else
+                          <span class="text-gray-600">-</span>
+                        @endif
+                      </td>
                       <td>
                         @if ($event->status == 1)
                           <label class="badge badge-true bg-green-600  ">{{ 'Active'}}</label>
