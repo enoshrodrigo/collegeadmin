@@ -12,7 +12,11 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::latest()->paginate(9);
-        return view('pages.events.index', compact('events'));
+        $total = Event::count();
+        $active = Event::where('status', 1)->count();
+        $offline = Event::where('status', 0)->count();
+        return view('pages.events.index', compact('events',
+            'total', 'active', 'offline'));
     }
 
     // Show form for creating an event

@@ -9,12 +9,52 @@
             </a>
         </div>
 
-        <!-- Success Message -->
+        <!-- Success Message tempory -->
         @if(session('success'))
             <div class="mb-6 p-4 bg-green-50 text-green-700 rounded-lg border border-green-200">
                 {{ session('success') }}
             </div>
         @endif
+
+   <!-- Statistics Cards -->
+   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+    <!-- Total Events -->
+    <div class="flex items-center p-4 bg-white rounded-lg shadow">
+      <div class="flex-shrink-0">
+        <svg class="h-12 w-12 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      </div>
+      <div class="ml-4">
+        <p class="text-2xl font-semibold text-gray-700">{{ $total }}</p>
+        <p class="text-sm text-gray-500">Total Events</p>
+      </div>
+    </div>
+    <!-- Active Events -->
+    <div class="flex items-center p-4 bg-white rounded-lg shadow">
+      <div class="flex-shrink-0">
+        <svg class="h-12 w-12 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+      <div class="ml-4">
+        <p class="text-2xl font-semibold text-gray-700">{{ $active }}</p>
+        <p class="text-sm text-gray-500">Active Events</p>
+      </div>
+    </div>
+    <!-- Offline Events -->
+    <div class="flex items-center p-4 bg-white rounded-lg shadow">
+      <div class="flex-shrink-0">
+        <svg class="h-12 w-12 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 00-7.07 17.07A10 10 0 0012 22a10 10 0 007.07-2.93A10 10 0 0012 2zm0 18a8 8 0 110-16 8 8 0 010 16zm0-14a6 6 0 100 12 6 6 0 000-12z" />
+        </svg>
+      </div>
+      <div class="ml-4">
+        <p class="text-2xl font-semibold text-gray-700">{{ $offline }}</p>
+        <p class="text-sm text-gray-500">Offline Events</p>
+      </div>
+    </div>
+</div>
 
         <!-- Events Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
