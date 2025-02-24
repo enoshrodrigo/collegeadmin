@@ -107,8 +107,8 @@ class EventController extends Controller
         // Process new photo uploads
         if ($request->hasFile('photos')) {
             // New photos will be appended after existing photos.
-            // Get the current count of existing photos.
-            $currentCount = EventPhoto::where('event_id', $event->id)->count();
+            // Get the current maximum order for existing photos, defaulting to 0 if none.
+            $maxOrder = EventPhoto::where('event_id', $event->id)->max('order') ?: 0;
             foreach ($request->file('photos') as $index => $photo) {
                 if ($photo->isValid()) {
                     $destinationPath = storage_path("events/{$event->id}");
@@ -122,8 +122,8 @@ class EventController extends Controller
                     EventPhoto::create([
                         'event_id' => $event->id,
                         'photo'    => $path,
-                        // New photos get an order value starting after existing photos
-                        'order'    => $currentCount + $index + 1,
+                        // New photos get an order value starting after the current maximum
+                        'order'    => $maxOrder + $index + 1,
                     ]);
                 }
             }

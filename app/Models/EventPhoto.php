@@ -9,7 +9,7 @@ class EventPhoto extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['event_id', 'photo'];
+    protected $fillable = ['event_id', 'photo','order'];
 
     public function event()
     {
