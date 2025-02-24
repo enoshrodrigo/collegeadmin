@@ -1,7 +1,9 @@
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">
-            <x-authentication-card-logo />
+       {{--      <x-authentication-card-logo /> --}}
+            {{-- Image login logo --}}
+            <img src="{{ asset('https://mazenodcollege.lk/wp-content/uploads/2023/02/Mazenod-College-High-res-2.png') }}" alt="logo" class="w-20  h-20">
         </x-slot>
 
         <x-validation-errors class="mb-4" />
