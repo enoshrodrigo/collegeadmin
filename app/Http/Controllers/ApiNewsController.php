@@ -14,14 +14,14 @@ class ApiNewsController extends Controller
     public function home()
     {
         // Get the latest 3 news items with status 1
-        $news = News::where('status', 1)->orderBy('created_at', 'desc')->take(3)->get();
+        $news = News::where('status', 1)->orderBy('date', 'desc')->take(3)->get();
         return response()->json($news);
     }
 
     public function index()
     {
         // Get paginated news items with status 1
-        $news = News::where('status', 1)->orderBy('created_at', 'desc')->paginate(9);
+        $news = News::where('status', 1)->orderBy('date', 'desc')->paginate(9);
         return response()->json($news);
     }
 
