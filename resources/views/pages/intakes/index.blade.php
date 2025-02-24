@@ -91,7 +91,8 @@
                    class="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-300">
           </div>
         <!-- Filter & Reset Buttons -->
-        <div class="mt-4 flex flex-wrap gap-2">
+        </div>
+ <div class="mt-4 flex flex-wrap gap-2">
           <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
             Filter
           </button>
@@ -99,8 +100,7 @@
              class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
             Reset
           </a>
-        </div>  </div>
-
+        </div> 
       
       </form>
     </div>

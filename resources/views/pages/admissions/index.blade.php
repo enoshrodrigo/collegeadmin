@@ -67,10 +67,10 @@
     <!-- Filter Section -->
     <div class="mb-6 p-4 bg-gray-50 rounded-md">
       <form action="{{ route('admissions.index') }}" method="GET">
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+        <div class="grid grid-cols-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 gap-4">
           <!-- Filter by Intake -->
           <div>
-            <label for="filter_intake" class="block text-gray-700 font-medium mb-1">Filter by Intake</label>
+            <label for="filter_intake" class="block text-gray-700 font-medium mb-1  ">Filter by Intake</label>
             <select id="filter_intake" name="intake_id" class="w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-300">
               <option value="">All Intakes</option>
               @foreach($intakes as $intake)
