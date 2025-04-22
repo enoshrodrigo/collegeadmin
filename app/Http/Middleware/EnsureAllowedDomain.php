@@ -13,7 +13,7 @@ class EnsureAllowedDomain
     protected $allowedOrigins = [
         'http://localhost:8000', // adjust as needed
         'http://127.0.0.1:8000',
-        'https://admin.marysvenner.net'
+        'https://mazenodcollege.org'
     ];
 
     /**
@@ -27,7 +27,7 @@ class EnsureAllowedDomain
     {
         // Get the Origin header from the request.
         /* $origin = $request->header('Origin'); */
-        $origin = 'https://admin.marysvenner.net';
+        $origin = $request->header('Origin');
 
         // If the Origin header is missing or not allowed, return an error.
         if (!$origin || !in_array($origin, $this->allowedOrigins)) {
